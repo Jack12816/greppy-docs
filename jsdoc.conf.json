@@ -20,9 +20,9 @@
         "default"         : {
             "outputSourceFiles" : true
         },
-        "systemName"      : "Greppy",
+        "systemName"      : "Greppy Framework",
         "footer"          : "Greppy is what you make it.",
-        "copyright"       : "Greppy Copyright © 2013 The contributors to the Greppy project.",
+        "copyright"       : "Copyright &copy; 2013 Greppy Gang ",
         "navType"         : "vertical",
         "theme"           : "bootstrap",
         "linenums"        : false,

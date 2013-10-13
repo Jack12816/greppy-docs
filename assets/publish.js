@@ -27,7 +27,7 @@ var docsUrl = helper.getUniqueFilename( 'guide' );
 var examplesUrl = helper.getUniqueFilename( 'examples' );
 
 var navOptions = {
-    systemName      : conf.systemName || "Documentation",
+    systemName      : conf.systemName || "Guide",
     navType         : conf.navType || "vertical",
     footer          : conf.footer || "",
     copyright       : conf.copyright || "",
@@ -44,7 +44,7 @@ var navigationMaster = {
         members : []
     },
     gettingStarted: {
-        title   : "Documentation",
+        title   : "Guide",
         icon    : 'icon-book',
         link    : docsUrl,
         members : []
@@ -605,10 +605,10 @@ exports.publish = function ( taffyData, opts, tutorials ) {
         ).concat( files ),
         indexUrl );
 
-    generate( 'gettingStarted', 'Framework - Documentation',
+    generate( 'gettingStarted', 'Framework - Guide',
         packages.concat(
             [
-                {kind : 'mainpage', readme : fs.readFileSync('./build/chaper_guide.html', 'utf8'), longname : (opts.mainpagetitle) ? opts.mainpagetitle : 'Documentation'}
+                {kind : 'mainpage', readme : fs.readFileSync('./build/chaper_guide.html', 'utf8'), longname : (opts.mainpagetitle) ? opts.mainpagetitle : 'Guide'}
             ]
         ).concat( files ),
         docsUrl );
