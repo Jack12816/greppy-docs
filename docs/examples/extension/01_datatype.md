@@ -12,5 +12,7 @@ console.log(
 // [ 3, 7, 45, 54, 77 ]
 // 'crazyShit'
 // 'Hello World'
+
+'Hello %s'.format('Ralf') // => 'Hello Ralf'
 ```
 

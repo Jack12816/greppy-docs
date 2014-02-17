@@ -128,6 +128,12 @@ To get an overview of all defined helpers, use the
 
     var helperNames = greppy.helper.list();
 
+With Greppy 0.5.0 we support wildcard loading of helpers.
+Just add an asterisk at the end of a helper path to load
+all matching helpers. They will be returned as a map.
+
+    var viewHelpers = greppy.helper.get('view.*') // => { date: {}, route: {}, type: {} }
+
 ### Define own helpers
 
 A sample helper could look like this:
