@@ -1,0 +1,97 @@
+#!/usr/bin/env node
+
+var async = require('async');
+var greppy = require('greppy');
+var path = require('path');
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var jade = require('jade');
+
+var package = require('../package.json');
+var greppyPath = greppy.helper.get('path');
+
+var rootPath = path.resolve(__dirname, '..');
+var buildPath = path.resolve(__dirname, '../build/examples/');
+var inputPath = path.resolve(__dirname, '../docs/examples/');
+
+// Find all index.json files
+var list = greppyPath.list(inputPath);
+
+// Create build directory
+mkdirp.sync(rootPath + '/build');
+mkdirp.sync(rootPath + '/build/assets');
+mkdirp.sync(rootPath + '/build/api');
+mkdirp.sync(rootPath + '/build/examples');
+mkdirp.sync(rootPath + '/build/explore');
+
+var dirs = list.filter(function(item) {
+    return /\.json$/i.test(item);
+}).map(function(item) {
+    return item.replace(inputPath, '').replace(/^\//i, '');
+}).map(function(item) {
+    return path.dirname(item);
+}).sort().map(function(item) {
+    var res = require(inputPath + '/' + item + '/index.json');
+    res.path = item;
+    res.toplevel = !/\//i.test(item);
+    return res;
+});
+
+
+var toplevels = dirs.filter(function(item) {
+    return item.toplevel;
+});
+
+var viewPath = rootPath + '/resources/views/index/examples.jade';
+var outputPath = buildPath + '/index.html';
+
+var html = jade.renderFile(viewPath, {
+    pretty: true,
+    package: package,
+    dirs: toplevels
+});
+
+console.log(html);
+
+fs.writeFileSync(outputPath, html);
+
+
+
+
+return;
+
+
+dirs.forEach(function(item) {
+
+    // Skip sub-levels
+    if (false === item.toplevel) {
+        return;
+    }
+
+    var curPath = buildPath + '/' + item.path + '/';
+    var viewPath = rootPath + '/resources/views/index/examples.jade';
+
+    console.log(item);
+
+
+    // mkdirp.sync(curPath);
+
+
+    // jade.render('', {}, function(err, html) {
+
+    //     if (err) {
+    //         console.error(err);
+    //         return;
+    //     }
+
+    //     fs.writeFileSync(curPath + 'index.html', html);
+    // });
+
+
+
+});
+
+
+
+// console.log(dirs);
+

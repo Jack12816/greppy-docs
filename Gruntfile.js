@@ -1,0 +1,91 @@
+/* global module:false */
+module.exports = function(grunt) {
+
+    // Project configuration
+    grunt.initConfig({
+
+        pkg: grunt.file.readJSON('package.json'),
+
+        cssmin: {
+            compress: {
+                options: {
+                    keepSpecialComments: 0
+                },
+                files: {
+                    'build/assets/docs.min.css': [
+                        'bower_components/bootstrap/dist/css/bootstrap.min.css',
+                        'bower_components/font-awesome/css/font-awesome.min.css',
+                        'resources/public/css/*'
+                    ]
+                }
+            }
+        },
+
+        uglify: {
+            compress: {
+                files: {
+                    'build/assets/docs.min.js': [
+                        'bower_components/jquery/dist/jquery.min.js',
+                        'bower_components/bootstrap/dist/js/bootstrap.min.js',
+                        'resources/public/js/*'
+                    ]
+                }
+            }
+        },
+
+        shell: {
+            generate: {
+                command: './bin/generate'
+            }
+        },
+
+        watch: {
+            main: {
+                options: {
+                    // Start a live reload server on the default port 35729
+                    livereload: true
+                },
+                files: [
+                    'Gruntfile.js',
+                    'resources/public/**'
+                ],
+                tasks: ['generate', 'default']
+            },
+            content: {
+                options: {
+                    // Start a live reload server on the default port 35729
+                    livereload: true
+                },
+                files: [
+                    'docs/**',
+                    'resources/views/**'
+                ],
+                tasks: 'generate'
+            }
+        },
+
+        connect: {
+            server: {
+                options: {
+                    port: 9000,
+                    base: 'build',
+                    livereload: true,
+                    keepalive: true,
+                    open: false
+                }
+            }
+        }
+    });
+
+    // Dependencies
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-shell');
+
+    // Default task
+    grunt.registerTask('generate', ['shell:generate']);
+    grunt.registerTask('default', ['cssmin', 'uglify']);
+};
+

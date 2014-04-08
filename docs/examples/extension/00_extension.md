@@ -1,5 +1,0 @@
-# Extensions
-
-We support with Greppy 0.5.0 missing implementations
-of ES5 and ES6. (using the packages: es5-shim and es6-shim)
-

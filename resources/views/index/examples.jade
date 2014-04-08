@@ -1,0 +1,12 @@
+extends ../layout
+include ../mixins/_directory
+
+block content
+
+  h1.text-center Examples
+  br
+
+  .row
+    each dir in dirs
+      +directory(dir)
+
