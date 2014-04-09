@@ -1,12 +1,18 @@
-extends ../layout
-include ../mixins/_directory
+extends ../section
+include ../mixins/_subsection
 
-block content
+block header
 
   h1.text-center Examples
   br
 
+block subsections
+
   .row
-    each dir in dirs
-      +directory(dir)
+    each section in subsections
+      +subsection(section)
+
+block section
+
+  h1 Section
 

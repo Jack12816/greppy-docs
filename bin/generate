@@ -6,13 +6,18 @@ var path = require('path');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var jade = require('jade');
+var marked = require('marked');
 
 var package = require('../package.json');
 var greppyPath = greppy.helper.get('path');
 
+var buildEntry = 'examples';
+
 var rootPath = path.resolve(__dirname, '..');
-var buildPath = path.resolve(__dirname, '../build/examples/');
-var inputPath = path.resolve(__dirname, '../docs/examples/');
+var buildPath = path.resolve(__dirname, '../build/' + buildEntry);
+var inputPath = path.resolve(__dirname, '../docs/' + buildEntry);
+var entryViewPath = path.resolve(__dirname, '../resources/views/index/' + buildEntry + '.jade');
+var subViewPath = path.resolve(__dirname, '../resources/views/index/subsection.jade');
 
 // Find all index.json files
 var list = greppyPath.list(inputPath);
@@ -24,74 +29,157 @@ mkdirp.sync(rootPath + '/build/api');
 mkdirp.sync(rootPath + '/build/examples');
 mkdirp.sync(rootPath + '/build/explore');
 
-var dirs = list.filter(function(item) {
+/**
+ * Search, sort, read, concat and render all
+ * markdown files for a path.
+ *
+ * @param {String} markdownPath - Path to render
+ * @return {String}
+ */
+var renderMarkdownPath = function(markdownPath)
+{
+    var content = fs.readdirSync(markdownPath).filter(function(item) {
+
+        // Filter markdown files
+        return /\.md$/.test(item);
+
+    }).sort().map(function(item) {
+
+        // Read the file content
+        return fs.readFileSync(path.join(markdownPath, item));
+
+    }).join('\n');
+
+    return marked(content, {
+        breaks: true
+    });
+};
+
+// Initalize the empty structure
+var struct = {};
+
+// Process the found files
+var paths = list.filter(function(item) {
+
+    // Only process json files
     return /\.json$/i.test(item);
+
 }).map(function(item) {
-    return item.replace(inputPath, '').replace(/^\//i, '');
-}).map(function(item) {
+
+    // Cleanup the path and get the dirname
+    var item = item.replace(inputPath, '').replace(/^\//i, '');
     return path.dirname(item);
+
 }).sort().map(function(item) {
-    var res = require(inputPath + '/' + item + '/index.json');
-    res.path = item;
-    res.toplevel = !/\//i.test(item);
+
+    // Sort paths - so we can build the hierarchy
+    // Load the JSON file and extend it
+    var resPath = inputPath + '/' + item;
+    var res = require(resPath + '/index.json');
+    res.parts = item.split('/');
+
+    // Render markdown files for this entry
+    res.content = renderMarkdownPath(resPath);
+
     return res;
+
+}).forEach(function(item) {
+
+    // Walk through all nodes and build up a hierarchy
+    var cur = struct;
+
+    for (var i = 0; i < item.parts.length; i++) {
+        var part = item.parts[i];
+        if (i === item.parts.length - 1) {
+            cur[part] = {
+                _name: item.name,
+                _icon: item.icon,
+                _content: item.content
+            };
+            break;
+        }
+        if (!cur[part]) {
+            cur[part] = {};
+        }
+        cur = cur[part];
+    }
 });
 
+/**
+ * Recursive view renderer.
+ *
+ * @param {Array} paths - Array of paths we concat
+ * @param {Object} section - Root Section object
+ */
+var renderSection = function(paths, section)
+{
+    // Build the output path
+    var joinPaths  = [buildPath];
+    joinPaths      = joinPaths.concat(paths);
+    var outputPath = path.join.apply(this, joinPaths);
+    joinPaths.push('index.html');
+    var outputFile = path.join.apply(this, joinPaths);
 
-var toplevels = dirs.filter(function(item) {
-    return item.toplevel;
-});
+    // Get the view path
+    var viewPath = subViewPath;
+    if (1 === paths.length && '/' === paths[0]) {
+        viewPath = entryViewPath;
+    }
 
-var viewPath = rootPath + '/resources/views/index/examples.jade';
-var outputPath = buildPath + '/index.html';
+    // Collect subsection names
+    var keys = Object.keys(section).filter(function(key) {
+        return !/^_/.test(key);
+    });
 
-var html = jade.renderFile(viewPath, {
-    pretty: true,
-    package: package,
-    dirs: toplevels
-});
+    // Collect subsections
+    var subsections = [].concat(keys).map(function(key) {
 
-console.log(html);
+        // Alias the section
+        var res = section[key];
 
-fs.writeFileSync(outputPath, html);
+        // Build relative path for links
+        var relPaths = [].concat(paths);
+        relPaths.unshift(buildEntry);
+        relPaths.push(key);
+        relPaths.push('index.html');
+        res._path = '/' + path.join.apply(this, relPaths);
 
+        return res;
+    });
 
+    // Here comes the rendering stuff
+    // Build the output path
+    mkdirp.sync(outputPath);
 
+    // Render the HTML
+    var html = jade.renderFile(viewPath, {
+        pretty: true,
+        package: package,
+        section: section,
+        subsections: subsections
+    });
 
-return;
+    // Write rendered file
+    fs.writeFileSync(outputFile, html);
 
+    console.log(
+        'Write file: ' +
+        outputFile.replace(rootPath, '')
+    );
 
-dirs.forEach(function(item) {
-
-    // Skip sub-levels
-    if (false === item.toplevel) {
+    // We are done for this path
+    if (0 === keys.length) {
         return;
     }
 
-    var curPath = buildPath + '/' + item.path + '/';
-    var viewPath = rootPath + '/resources/views/index/examples.jade';
+    // Walk through all paths recusivly
+    keys.forEach(function(key) {
+        var newPaths = [].concat(paths)
+        newPaths.push(key);
+        renderSection(newPaths, section[key]);
+    });
+};
 
-    console.log(item);
-
-
-    // mkdirp.sync(curPath);
-
-
-    // jade.render('', {}, function(err, html) {
-
-    //     if (err) {
-    //         console.error(err);
-    //         return;
-    //     }
-
-    //     fs.writeFileSync(curPath + 'index.html', html);
-    // });
-
-
-
-});
-
-
-
-// console.log(dirs);
+// Render the documentation entry
+renderSection(['/'], struct);
 
