@@ -1,0 +1,8 @@
+mixin subsection(section)
+  .col-lg-2.text-center.component
+    a(href="#{section._path}")
+      i.fa.fa-3x.fa-border-circle.text-muted(class="#{section._icon}")
+    br
+    a(href="#{section._path}")
+      h3 #{section._name}
+

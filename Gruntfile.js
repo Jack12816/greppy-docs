@@ -49,7 +49,7 @@ module.exports = function(grunt) {
                     'Gruntfile.js',
                     'resources/public/**'
                 ],
-                tasks: ['generate', 'default']
+                tasks: ['generate', 'assets']
             },
             content: {
                 options: {
@@ -86,6 +86,7 @@ module.exports = function(grunt) {
 
     // Default task
     grunt.registerTask('generate', ['shell:generate']);
-    grunt.registerTask('default', ['cssmin', 'uglify']);
+    grunt.registerTask('assets', ['cssmin', 'uglify']);
+    grunt.registerTask('default', ['generate', 'assets']);
 };
 

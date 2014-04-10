@@ -4,12 +4,16 @@ include ../mixins/_subsection
 block header
 
   .row.text-center
-    h1 Examples
+    h1 #{section._name}
     hr
 
 block subsections
 
-  .row.text-center
+  .row
     each section in subsections
       +subsection(section)
+
+block section
+
+  |!{section._content}
 
