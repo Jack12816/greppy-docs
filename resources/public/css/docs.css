@@ -25,8 +25,23 @@ html, body { background-color: #F7F7F7; background-image: url("/assets/noise.png
  *
  * Styles for the main content block.
  **/
-#content{margin-top: 54px; margin-bottom:4px}
+#content{margin-top: 65px; margin-bottom:4px}
 .v-center { top: 50%; }
+
+.nav .active:after {
+    color: #F1F1F1;
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    width: 0px;
+    height: 0px;
+    margin-left: -8px;
+    vertical-align: middle;
+    content: " ";
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid;
+    border-left: 8px solid transparent;
+}
 
 
 /**
@@ -56,15 +71,14 @@ hr { border-color: #E5E5E5 -moz-use-text-color -moz-use-text-color; }
     margin-top: 0px;
     margin-bottom: 0px;
 }
-#main h1:first-of-type,
-#main h2:first-of-type,
-#main h3:first-of-type,
-#main h4:first-of-type,
-#main h5:first-of-type,
-#main h6:first-of-type {
-/* #toc ul:first-of-type { */
-    margin-top: 0px;
-}
+/* #main h1:first-of-type, */
+/* #main h2:first-of-type, */
+/* #main h3:first-of-type, */
+/* #main h4:first-of-type, */
+/* #main h5:first-of-type, */
+/* #main h6:first-of-type { */
+/*     margin-top: 0px; */
+/* } */
 
 #main, #toc {
     padding-top: 20px;
@@ -79,6 +93,46 @@ hr { border-color: #E5E5E5 -moz-use-text-color -moz-use-text-color; }
 #toc ul  {
     margin-top: 10px;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6,
+section,
+.anchor,
+a[name] {
+    padding-top: 60px;
+    margin-top: -60px;
+}
+
+h1:before {
+    display: block;
+    content: " ";
+    height: 20px;
+}
+h2:before {
+    display: block;
+    content: " ";
+    height: 15px;
+}
+h3:before,
+h4:before,
+h5:before,
+h6:before {
+    display: block;
+    content: " ";
+    height: 10px;
+}
+
+#main h1:first-of-type:before,
+#main h2:first-of-type:before {
+    height: 0px;
+}
+
+/* a[name] { */
+/*     display: inline-block; /* required for webkit browsers */ */
+/* } */
 
 
 /**

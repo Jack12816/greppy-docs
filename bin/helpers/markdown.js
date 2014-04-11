@@ -58,14 +58,13 @@ Markdown.prototype.buildTableOfContents = function(content)
             toc.push(mdHeading);
 
             // Extend the original content
-            line = util.format(
-                '<a name="%s"></a>\n%s',
-                headingSlug, line
-            );
+            // line = util.format(
+            //     '%s\n<a name="%s"></a>',
+            //     line, headingSlug
+            // );
         }
 
         return line;
-
     });
 
     return {
@@ -100,11 +99,11 @@ Markdown.prototype.renderFilesForPath = function(markdownPath, doc)
     var build = this.buildTableOfContents(content);
     var topSlug = slug(doc.name).toLowerCase();
 
-    // Add current 1st level
-    build.content = util.format(
-        '<a name="%s"></a>\n%s',
-        topSlug, build.content
-    );
+    // // Add current 1st level
+    // build.content = util.format(
+    //     '<a name="%s"></a>\n%s',
+    //     topSlug, build.content
+    // );
 
     build.content = this.marked(build.content, {
         breaks: false
