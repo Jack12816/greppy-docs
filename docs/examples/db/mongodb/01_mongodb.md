@@ -1,8 +1,6 @@
-## MongoDB
+## Simple insert into a collection
 
-### Simple insert into a collection
-
-```javascript
+```js
 greppy.db.get('mongodb.demo').instance.collection('keys', function(err, collection) {
 
     collection.insert({
@@ -16,9 +14,9 @@ greppy.db.get('mongodb.demo').instance.collection('keys', function(err, collecti
 });
 ```
 
-### Find one document by it's ObjectID
+## Find one document by it's ObjectID
 
-```javascript
+```js
 var connection = greppy.db.get('mongodb.demo');
 
 connection.instance.collection('keys', function(err, collection) {
@@ -32,9 +30,9 @@ connection.instance.collection('keys', function(err, collection) {
 });
 ```
 
-### Insert a document with mongoose
+## Insert a document with mongoose
 
-```javascript
+```js
 greppy.db.get('mongodb.demo').getORM(function(orm, models) {
 
     models.User.create({

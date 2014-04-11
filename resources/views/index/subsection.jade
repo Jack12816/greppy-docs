@@ -3,9 +3,13 @@ include ../mixins/_subsection
 
 block header
 
-  .row.text-center
-    h1 #{section._name}
-    hr
+  .row
+    .col-sm-offset-3.col-sm-9
+      h1
+        i.fa(class="#{section._icon}")
+        |  #{section._name}
+    .col-lg-12
+      hr
 
 block subsections
 
@@ -15,5 +19,10 @@ block subsections
 
 block section
 
-  |!{section._content}
+  .row
+    .col-sm-3#toc
+      |!{section._content.toc}
+
+    .col-sm-9#main
+      |!{section._content.content}
 

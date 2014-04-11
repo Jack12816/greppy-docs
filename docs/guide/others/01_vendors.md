@@ -1,13 +1,13 @@
-# Vendor libraries
+## Vendor libraries
 
 Due to the great amount of vendor libraries, many features and functionalities
 are easy to use without reinventing the wheel. The advantage of this is a
 less time-consuming development process of applications. Learning to write
 enterprise applications means learning how to use these vendor libraries.
 
-## Commons
+### Commons
 
-### Async.js
+#### Async.js
 
 Async is a utility module which provides straight-forward, powerful functions
 for working with asynchronous JavaScript. Async provides around 20 functions
@@ -18,7 +18,7 @@ providing a single callback as the last argument of your async function.
 
 Source: https://github.com/caolan/async
 
-### Moment.js
+#### Moment.js
 
 A javascript date library for parsing, validating, manipulating, and formatting dates.
 Moment was designed to work both in the browser and in Node.JS. All code will work in
@@ -26,16 +26,16 @@ both environments.
 
 Source: http://momentjs.com/docs/
 
-### memory-cache
+#### memory-cache
 
 A simple in-memory cache for node.js. Which gives you the ability to cache your objects
 or data-structures easily in RAM.
 
 Source: https://github.com/ptarjan/node-cache
 
-## Testing
+### Testing
 
-### mocha
+#### mocha
 
 Mocha is a feature-rich JavaScript test framework running on node and the browser,
 making asynchronous testing simple and fun. Mocha tests run serially, allowing for

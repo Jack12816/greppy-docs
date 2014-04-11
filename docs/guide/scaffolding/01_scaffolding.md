@@ -1,5 +1,3 @@
-# Scaffolding
-
 The Greppy frameowork offers a quite powerful scaffolding solution, which
 can be used to generate models with migrations and fixtures, application
 contexts, and even CRUD (Create-Read-Update-Delete) controllers. This solution

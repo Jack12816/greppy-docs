@@ -2,24 +2,24 @@
 
 ### Broadcast Listening
 
-```javascript
-    setTimeout(function() {
+```js
+setTimeout(function() {
 
-        master.getIPC().broadcast('gracefull.shutdown', {
-            shutdownTime: new Date()
-        });
+    master.getIPC().broadcast('gracefull.shutdown', {
+        shutdownTime: new Date()
+    });
 
-    }, 2000);
+}, 2000);
 ```
 
 ### Interval based IPC request/response
 
-```javascript
-    master.getIPC().addMethod('notify.request', function(msg, options, callback) {
+```js
+master.getIPC().addMethod('notify.request', function(msg, options, callback) {
 
-        callback && callback(null, {
-            test: ++options.test
-        });
+    callback && callback(null, {
+        test: ++options.test
     });
+});
 ```
 

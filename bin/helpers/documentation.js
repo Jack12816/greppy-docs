@@ -85,7 +85,7 @@ Documentation.prototype.buildStructure = function()
         res.parts = item.split('/');
 
         // Render markdown files for this entry
-        res.content = self.markdown.renderFilesForPath(resPath);
+        res.content = self.markdown.renderFilesForPath(resPath, res);
 
         return res;
 

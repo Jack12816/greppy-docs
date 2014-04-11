@@ -2,7 +2,7 @@
 
 ### Show some extensions on some native objects
 
-```javascript
+```js
 console.log(
     [77, 3, 45, 54, 7].uniq(),
     'crazy-shit'.toCamelCase(),

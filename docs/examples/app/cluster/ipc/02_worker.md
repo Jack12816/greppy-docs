@@ -2,7 +2,7 @@
 
 ### Broadcast Listening
 
-```javascript
+```js
 worker.getIPC().addBroadcastListener('gracefull.shutdown', function(err, result, msg) {
     console.log(err, result, msg);
 });
@@ -10,7 +10,7 @@ worker.getIPC().addBroadcastListener('gracefull.shutdown', function(err, result,
 
 ### Interval based IPC request/response
 
-```javascript
+```js
 var i = 0;
 
 setInterval(function() {

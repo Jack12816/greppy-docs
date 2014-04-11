@@ -52,6 +52,34 @@ hr { border-color: #E5E5E5 -moz-use-text-color -moz-use-text-color; }
     margin-bottom: 3em;
 }
 
+#main p:first-of-type {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+#main h1:first-of-type,
+#main h2:first-of-type,
+#main h3:first-of-type,
+#main h4:first-of-type,
+#main h5:first-of-type,
+#main h6:first-of-type {
+/* #toc ul:first-of-type { */
+    margin-top: 0px;
+}
+
+#main, #toc {
+    padding-top: 20px;
+}
+
+#toc li {
+    list-style-type: none !important;
+    margin-bottom: 10px;
+    margin-left: -20px;
+}
+
+#toc ul  {
+    margin-top: 10px;
+}
+
 
 /**
  * @section 3. Bootstrap extension

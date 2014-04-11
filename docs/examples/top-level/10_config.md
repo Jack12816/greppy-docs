@@ -2,7 +2,7 @@
 
 ### Build a new configuration without the store
 
-```javascript
+```js
 var Config = greppy.get('config');
 
 var config = new Config({
@@ -19,7 +19,7 @@ console.log(config.get('infrastructure'));
 
 ### Load a configuration into the store
 
-```javascript
+```js
 var config = greppy.config.load(process.cwd() + '/app/config/application.js', 'app', {
     default: {
         infrastructure: {

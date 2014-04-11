@@ -1,12 +1,8 @@
-# Model/Module-Controller-View
-
-We designed our framework to implement the MVC (Model-View-Controler)
-pattern with the help of the Express framework and our application
-structure.
-
-Greppy is a top-layer overlay for Express and extends the functionality
-of it. So we support encapsulation of controllers into namespaces (called
-modules) and an uniform loading mechanism for them.
+We designed our framework to implement the MVC (Model-View-Controler) pattern
+with the help of the Express framework and our application structure. Greppy is
+a top-layer overlay for Express and extends the functionality of it. So we
+support encapsulation of controllers into namespaces (called modules) and an
+uniform loading mechanism for them.
 
 ## Structures of modules
 
@@ -40,47 +36,49 @@ files in a module, as long as it fits in this namespace.
 Lets look at a simple index controller, which will only render a view without
 pushing data to it.
 
-    /**
-     * Index Controller
-     *
-     * @module demo/controller/index
-     * @author Hermann Mayer <hermann.mayer92@gmail.com>
-     */
+```js
+/**
+ * Index Controller
+ *
+ * @module demo/controller/index
+ * @author Hermann Mayer <hermann.mayer92@gmail.com>
+ */
 
-    /**
-     * @constructor
-     */
-    var IndexController = function()
-    {
-        // Call the super constructor
-        IndexController.super_.call(this);
-    };
+/**
+ * @constructor
+ */
+var IndexController = function()
+{
+    // Call the super constructor
+    IndexController.super_.call(this);
+};
 
-    /**
-     * Extend Greppy framework base controller
-     */
-    util.inherits(IndexController, greppy.get('http.mvc.controller'));
+/**
+ * Extend Greppy framework base controller
+ */
+util.inherits(IndexController, greppy.get('http.mvc.controller'));
 
-    /**
-     * Build the controller instance
-     */
-    module.exports = IndexController = new IndexController();
+/**
+ * Build the controller instance
+ */
+module.exports = IndexController = new IndexController();
 
-    /**
-     * Deliver the home page.
-     *
-     * @type {ControllerAction}
-     * @public
-     */
-    IndexController.actions.index =
-    {
-        methods : ['GET'],
-        action  : function(req, res) {
+/**
+ * Deliver the home page.
+ *
+ * @type {ControllerAction}
+ * @public
+ */
+IndexController.actions.index =
+{
+    methods : ['GET'],
+    action  : function(req, res) {
 
-            // Render the view
-            res.render('app/home');
-        }
-    };
+        // Render the view
+        res.render('app/home');
+    }
+};
+```
 
 ## Working with views
 
@@ -88,13 +86,15 @@ A view can be defined as Jade or any templating engine you want. You just
 have to configure it in the worker context. A simple example for the previous
 declared controller action could look like this:
 
-    h2 Hello World
-      a.pull-right(onclick="history.back();", title="Zurück").btn
-        i.icon-arrow-left
+```jade
+h2 Hello World
+  a.pull-right(onclick="history.back();", title="Zurück").btn
+    i.icon-arrow-left
 
-    p
-      | This would be a long paragraph.
-      | Over many lines.
+p
+  | This would be a long paragraph.
+  | Over many lines.
+```
 
 ## Helpers
 
@@ -109,61 +109,73 @@ directory of your model. The previously shown module directory structure got
 a ``github`` helper, located in a ``request`` namespace. To access this helper,
 the following code will do the trick:
 
-    var helper = greppy.helper.get('admin.requests.github');
+```js
+var helper = greppy.helper.get('admin.requests.github');
+```
 
 If you plan to put helpers directly in the modules helpers directory, you
 can access them this way:
 
-    var helper = greppy.helper.get('admin.helperName');
+```js
+var helper = greppy.helper.get('admin.helperName');
+```
 
 Greppy ships with some predefined helper sets for many common needs.
 Accessing these is basically the same:
 
-    var helper = greppy.helper.get('controller.error');
+```js
+var helper = greppy.helper.get('controller.error');
+```
 
 You just don't specify the module name.
 
 To get an overview of all defined helpers, use the
 ``list()`` method of the helper store. Just call it this way:
 
-    var helperNames = greppy.helper.list();
+```js
+var helperNames = greppy.helper.list();
+```
 
 With Greppy 0.5.0 we support wildcard loading of helpers.
 Just add an asterisk at the end of a helper path to load
 all matching helpers. They will be returned as a map.
 
-    var viewHelpers = greppy.helper.get('view.*') // => { date: {}, route: {}, type: {} }
+```js
+var viewHelpers = greppy.helper.get('view.*') // => { date: {}, route: {}, type: {} }
+```
 
 ### Define own helpers
 
 A sample helper could look like this:
 
-    /**
-     * Test Helper
-     *
-     * @module demo/helper/test
-     * @author Hermann Mayer <hermann.mayer92@gmail.com>
-     */
+```js
+/**
+ * Test Helper
+ *
+ * @module demo/helper/test
+ * @author Hermann Mayer <hermann.mayer92@gmail.com>
+ */
 
-    /**
-     * @constructor
-     */
-    var TestHelper = function()
-    {
-    }
+/**
+ * @constructor
+ */
+var TestHelper = function()
+{
+}
 
-    /**
-     * Just prefix the given string with a test tag.
-     *
-     * @param {String} str - String to prefix with test
-     * @return {String}
-     */
-    TestHelper.prototype.test = function(str)
-    {
-        return '[Test] ' + str;
-    }
+/**
+ * Just prefix the given string with a test tag.
+ *
+ * @param {String} str - String to prefix with test
+ * @return {String}
+ */
+TestHelper.prototype.test = function(str)
+{
+    return '[Test] ' + str;
+}
 
-    module.exports = TestHelper;
+module.exports = TestHelper;
+```
 
 The defined helper ``test`` got a method ``test(str)``.
 

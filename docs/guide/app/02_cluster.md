@@ -1,15 +1,15 @@
-# Cluster
+## Cluster
 
-## Server
+### Server
 
-### Tasks
+#### Tasks
 
 * IPC pool provisioning
 * Worker process management
 * managing the application logs
 * ability to register metrics (counter, stats)
 
-### Description
+#### Description
 
 The server is the starting point of the whole application. Deriving
 from other languages and systems, such as Ruby or Java, it represents
@@ -23,9 +23,9 @@ the master's implementation is as easy and definitive as possible.
 If the master crashes, the application's availability cannot be
 ensured anymore. This case is called a master crash.
 
-## Worker
+### Worker
 
-### Tasks
+#### Tasks
 
 * Bootstraping the backend connection
 * Bootstraping the Express application
@@ -33,7 +33,7 @@ ensured anymore. This case is called a master crash.
 * Providing the HTTP servers
 * Providing a module's application
 
-### Description
+#### Description
 
 The worker is started and managed by the cluster master.
 After forking the worker process, the backend configuration is loaded
@@ -49,14 +49,14 @@ Finally, the HTTP server is provided with the configured Express
 application and starts listening to the configured TCP port.
 The application is ready by this point.
 
-## Worker Context
+### Worker Context
 
-### Tasks
+#### Tasks
 
 * Configuring the specific application context
 * Specifying which backend connections and modules are loaded
 
-### Description
+#### Description
 
 The worker context is different from the generic worker as it provides
 the worker with additional information. Theoretically, the generic worker

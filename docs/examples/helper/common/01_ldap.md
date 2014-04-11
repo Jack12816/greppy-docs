@@ -2,7 +2,7 @@
 
 ### Fetch LDAP information by query
 
-```javascript
+```js
 var config = {
     url             : 'ldaps://ldap.acme.com',
     bindDN          : 'uid=serviceUser,ou=Services,dc=acme,dc=lan',

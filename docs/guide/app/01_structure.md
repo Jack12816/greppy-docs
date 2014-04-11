@@ -1,4 +1,4 @@
-# Structure
+## Structure
 
 The structure results from an application's logical encapsulation of
 namespaces and responsibilities. A brief overview can be described
@@ -43,7 +43,7 @@ as the following:
     ├── package.json
     └── README.md
 
-## Directory Breakdown
+### Directory Breakdown
 
 * ``package.json`` Package meta data - gives a short description of the package including dependencies.
     See: [http://package.json.nodejitsu.com](http://package.json.nodejitsu.com)

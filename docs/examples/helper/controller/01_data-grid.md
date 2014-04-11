@@ -5,7 +5,7 @@
 This is very usefull on big SQL tables where a count
 takes very long.
 
-```javascript
+```js
 var count = function(callback) {
 
     // Only show prev/next buttons without counting.

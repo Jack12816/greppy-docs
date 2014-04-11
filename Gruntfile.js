@@ -6,6 +6,22 @@ module.exports = function(grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
+        jade: {
+            compile: {
+                options: {
+                    data: {
+                        debug: false,
+                        package: '<%= pkg %>'
+                    }
+                },
+                files: {
+                    'build/index.html': [
+                        'resources/views/index/index.jade'
+                    ]
+                }
+            }
+        },
+
         cssmin: {
             compress: {
                 options: {
@@ -61,6 +77,16 @@ module.exports = function(grunt) {
                     'resources/views/**'
                 ],
                 tasks: 'generate'
+            },
+            build: {
+                options: {
+                    // Start a live reload server on the default port 35729
+                    livereload: true
+                },
+                files: [
+                    'bin/**'
+                ],
+                tasks: 'default'
             }
         },
 
@@ -82,10 +108,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jade');
     grunt.loadNpmTasks('grunt-shell');
 
     // Default task
-    grunt.registerTask('generate', ['shell:generate']);
+    grunt.registerTask('generate', ['shell:generate', 'jade']);
     grunt.registerTask('assets', ['cssmin', 'uglify']);
     grunt.registerTask('default', ['generate', 'assets']);
 };

@@ -2,7 +2,7 @@
 
 ### Context
 
-```javascript
+```js
 Context.prototype.configure = function(app, server, callback)
 {
     // Define some Auth stuff
@@ -27,7 +27,7 @@ Context.prototype.configure = function(app, server, callback)
 
 ### Controller
 
-```javascript
+```js
 Controller.prototype.configure = function(app, server, callback)
 {
     this.options.auth.handler = app.get('auth.http');
