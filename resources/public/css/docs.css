@@ -20,6 +20,8 @@ html, body { background-color: #F7F7F7; background-image: url("/assets/noise.png
 #wrap > .container{padding:0 15px 0}
 
 
+
+
 /**
  * @section 2. Content
  *
@@ -41,6 +43,12 @@ html, body { background-color: #F7F7F7; background-image: url("/assets/noise.png
     border-right: 8px solid transparent;
     border-bottom: 8px solid;
     border-left: 8px solid transparent;
+}
+
+.navbar {
+    -webkit-box-shadow: 0px 10px 5px #ffffff;
+    -moz-box-shadow: 0px 10px 5px #ffffff;
+    box-shadow: 0px 10px 5px #ffffff;
 }
 
 
@@ -198,5 +206,12 @@ h6:before {
 
 .margin-bottom-grande {
     margin-bottom: 18em;
+}
+
+@media (max-width: 767px) {
+
+    .nav .active:after {
+        display: none;
+    }
 }
 
