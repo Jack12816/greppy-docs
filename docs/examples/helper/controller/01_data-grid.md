@@ -1,6 +1,6 @@
-### Data-Grid
+## Data-Grid
 
-#### Pagination without actual page
+### Pagination without actual page
 
 This is very usefull on big SQL tables where a count
 takes very long.
