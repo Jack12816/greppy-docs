@@ -81,19 +81,26 @@ Markdown.prototype.buildTableOfContents = function(content)
  * @param {Object} doc - Documentation object
  * @return {String}
  */
-Markdown.prototype.renderFilesForPath = function(markdownPath, doc)
+Markdown.prototype.renderFiles = function(markdownPath, doc)
 {
-    var content = fs.readdirSync(markdownPath).filter(function(item) {
+    var stat = fs.statSync(markdownPath);
+    var content = '';
 
-        // Filter markdown files
-        return /\.md$/.test(item);
+    if (stat.isFile()) {
+        content = fs.readFileSync(markdownPath).toString();
+    } else if (stat.isDirectory()) {
+        content = fs.readdirSync(markdownPath).filter(function(item) {
 
-    }).sort().map(function(item) {
+            // Filter markdown files
+            return /\.md$/.test(item);
 
-        // Read the file content
-        return fs.readFileSync(path.join(markdownPath, item));
+        }).sort().map(function(item) {
 
-    }).join('\n');
+            // Read the file content
+            return fs.readFileSync(path.join(markdownPath, item));
+
+        }).join('\n');
+    }
 
     // Build table of contents
     var build = this.buildTableOfContents(content);

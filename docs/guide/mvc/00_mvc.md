@@ -141,7 +141,8 @@ Just add an asterisk at the end of a helper path to load
 all matching helpers. They will be returned as a map.
 
 ```js
-var viewHelpers = greppy.helper.get('view.*') // => { date: {}, route: {}, type: {} }
+var viewHelpers = greppy.helper.get('view.*');
+// => { date: {}, route: {}, type: {} }
 ```
 
 ### Define own helpers

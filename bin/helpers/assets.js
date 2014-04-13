@@ -38,13 +38,13 @@ Assets.prototype.createBuildDirectories = function()
 Assets.prototype.copyAssets = function()
 {
     wrench.copyDirSyncRecursive(
-        this.imagesPath, this.assetsPath
-        // , {forceDelete: true}
+        this.imagesPath, this.assetsPath,
+        {forceDelete: true}
     );
 
     wrench.copyDirSyncRecursive(
-        this.faFontsSrcPath, this.fontsDestPath
-        // , {forceDelete: true}
+        this.faFontsSrcPath, this.fontsDestPath,
+        {forceDelete: true}
     );
 };
 

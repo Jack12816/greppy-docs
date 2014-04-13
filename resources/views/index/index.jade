@@ -3,18 +3,29 @@ include ../mixins/_subsection
 
 block content
 
-  .row.text-center
-    h1 Framework Documentation
-    hr
+  .row
+    .col-lg-12
+      h1
+        i.fa.fa-gears
+        |  Framework Documentation
+  .row
+    .col-lg-12
+      ol.breadcrumb
+        li.active
+          span Framework Documentation
+  .row
+    .col-lg-12
+      hr
 
   - var sections = []
-  - sections.push({_name: 'Readme', _icon: 'fa-file-text-o', _path: '/readme.html'})
-  - sections.push({_name: 'Changelog', _icon: 'fa-clock-o', _path: '/changelog.html'})
+  - sections.push({_name: 'Readme', _icon: 'fa-file-text-o', _path: '/readme'})
+  - sections.push({_name: 'Changelog', _icon: 'fa-clock-o', _path: '/changelog'})
   - sections.push({_name: 'API', _icon: 'fa-code', _path: '/api'})
   - sections.push({_name: 'Guide', _icon: 'fa-book', _path: '/guide'})
   - sections.push({_name: 'Examples', _icon: 'fa-th-large', _path: '/examples'})
 
   .row
-    each section in sections
-      +subsection(section)
+    .col-lg-12
+      each section in sections
+        +subsection(section)
 

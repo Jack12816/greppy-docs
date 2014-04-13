@@ -8,6 +8,15 @@ block header
       h1
         i.fa(class="#{section._icon}")
         |  #{section._name}
+  .row
+    .col-sm-offset-3.col-sm-9
+      ol.breadcrumb
+        each crumb in breadcrumbs
+          li
+            a(href="#{crumb._path}") #{crumb._name}
+        li.active
+          span #{section._name}
+  .row
     .col-lg-12
       hr
 

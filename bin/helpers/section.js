@@ -4,6 +4,7 @@
  * @author Hermann Mayer <hermann.mayer92@gmail.com>
  */
 
+var greppy = require('greppy');
 var path = require('path');
 var wrench = require('wrench');
 var jade = require('jade');
@@ -48,10 +49,21 @@ var Section = function(options)
  *
  * @param {Array} paths - Array of paths we concat
  * @param {Object} section - Root Section object
+ * @param {Array} sections - Path of all passed sections
  */
-Section.prototype.render = function(paths, section)
+Section.prototype.render = function(paths, section, sections)
 {
     var self = this;
+
+    // Setup sections paths if not extist
+    if (!sections) {
+        sections = [];
+    }
+
+    // Setup paths if not exists
+    if (!paths) {
+        paths = [];
+    }
 
     // Build the output path
     var joinPaths  = [this.options.buildPath];
@@ -64,6 +76,12 @@ Section.prototype.render = function(paths, section)
     var viewPath = this.options.subViewPath;
     if (1 === paths.length && '/' === paths[0]) {
         viewPath = this.options.entryViewPath;
+    }
+
+    // Prepare current section if needed
+    if (!section._name || !section._path) {
+        section._path = '/' + this.options.entry;
+        section._name = this.options.entry.capitalize();
     }
 
     // Collect subsection names
@@ -96,7 +114,8 @@ Section.prototype.render = function(paths, section)
         pretty: true,
         package: this.package,
         section: section,
-        subsections: subsections
+        subsections: subsections,
+        breadcrumbs: sections
     });
 
     // Write rendered file
@@ -116,9 +135,14 @@ Section.prototype.render = function(paths, section)
 
     // Walk through all paths recusivly
     keys.forEach(function(key) {
+
         var newPaths = [].concat(paths)
         newPaths.push(key);
-        self.render(newPaths, section[key]);
+
+        var newSections = [].concat(sections);
+        newSections.push(section);
+
+        self.render(newPaths, section[key], newSections);
     });
 };
 

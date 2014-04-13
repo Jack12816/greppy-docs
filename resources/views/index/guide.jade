@@ -3,9 +3,22 @@ include ../mixins/_subsection
 
 block header
 
-  .row.text-center
-    h1 Guide
-    hr
+  .row
+    .col-lg-12
+      h1
+        i.fa.fa-book
+        |  Guide
+  .row
+    .col-lg-12
+      ol.breadcrumb
+        each crumb in breadcrumbs
+          li
+            a(href="#{crumb._path}") #{crumb._name}
+        li.active
+          span #{section._name}
+  .row
+    .col-lg-12
+      hr
 
 block subsections
 

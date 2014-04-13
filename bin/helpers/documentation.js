@@ -1,5 +1,5 @@
 /**
- * Section helper.
+ * Documentation helper.
  *
  * @author Hermann Mayer <hermann.mayer92@gmail.com>
  */
@@ -26,22 +26,27 @@ var Documentation = function(options)
     var defaultOptions = {
         entry: '',
         inputPath: path.join(rootPath, 'docs', '%s'),
-        buildPath: path.join(rootPath, 'build', '%s')
+        buildPath: path.join(rootPath, 'build', '%s'),
+        breadcrumbs: []
     };
 
     // Assemble the options
     this.options = extend({}, defaultOptions, options || {});
 
     // Replace paths
-    this.options.inputPath = util.format(
-        this.options.inputPath,
-        this.options.entry
-    );
+    if (this.options.inputPath.contains('%s')) {
+        this.options.inputPath = util.format(
+            this.options.inputPath,
+            this.options.entry
+        );
+    }
 
-    this.options.buildPath = util.format(
-        this.options.buildPath,
-        this.options.entry
-    );
+    if (this.options.buildPath.contains('%s')) {
+        this.options.buildPath = util.format(
+            this.options.buildPath,
+            this.options.entry
+        );
+    }
 
     // Find all index.json files
     this.list = greppyPath.list(this.options.inputPath);
@@ -53,9 +58,6 @@ var Documentation = function(options)
 
 /**
  * Build structure.
- *
- * @param {Array} paths - Array of paths we concat
- * @param {Object} section - Root Section object
  */
 Documentation.prototype.buildStructure = function()
 {
@@ -85,7 +87,7 @@ Documentation.prototype.buildStructure = function()
         res.parts = item.split('/');
 
         // Render markdown files for this entry
-        res.content = self.markdown.renderFilesForPath(resPath, res);
+        res.content = self.markdown.renderFiles(resPath, res);
 
         return res;
 
@@ -116,9 +118,6 @@ Documentation.prototype.buildStructure = function()
 
 /**
  * Build the documentation.
- *
- * @param {Array} paths - Array of paths we concat
- * @param {Object} section - Root Section object
  */
 Documentation.prototype.build = function()
 {
@@ -129,7 +128,7 @@ Documentation.prototype.build = function()
     var structure = this.buildStructure();
 
     // Render sections
-    this.section.render(['/'], structure);
+    this.section.render(['/'], structure, this.options.breadcrumbs);
 };
 
 module.exports = Documentation;

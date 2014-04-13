@@ -1,10 +1,13 @@
 /**
- * @package Greppy blog main stylesheet
+ * @package Greppy docs main stylesheet
  *
  * @tableofcontents
- * 1. General Styles
- * 2. Misc
- * 3. Bootstrap extension
+ * 1. General styles
+ * 2. Content
+ * 3. Footer
+ * 4. Misc
+ * 5. Bootstrap extension
+ * 6. Responsive styles
  **/
 
 /**
@@ -12,23 +15,25 @@
  *
  * General styles which are valid for all or most of the pages.
  **/
-html, body{height:100%}
-html, body { background-color: #F7F7F7; background-image: url("/assets/noise.png"); background-repeat: repeat; }
+html, body{
+    height: 100%;
+    background-color: #F7F7F7;
+    background-image: url("/assets/noise.png");
+    background-repeat: repeat;
+}
 
 /* Wrapper for page content to push down footer */
-#wrap{min-height:100%;height:auto !important;height:100%;margin:0 auto -140px;padding:0 0 170px}
-#wrap > .container{padding:0 15px 0}
+#wrap{
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -140px;
+    padding: 0 0 170px;
+}
 
-
-
-
-/**
- * @section 2. Content
- *
- * Styles for the main content block.
- **/
-#content{margin-top: 65px; margin-bottom:4px}
-.v-center { top: 50%; }
+#wrap > .container{
+    padding: 0 15px 0;
+}
 
 .nav .active:after {
     color: #F1F1F1;
@@ -51,42 +56,24 @@ html, body { background-color: #F7F7F7; background-image: url("/assets/noise.png
     box-shadow: 0px 10px 5px #ffffff;
 }
 
-
 /**
- * @section 3. Footer
- **/
-#footer{height:140px;padding:16px 0;border-top:5px solid #222222; background-color:#32708F;color:#fff;background-image:url("/assets/bubbles.png");box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15) inset;}
-#footer a { color: #fff; }
-#footer a:hover, #footer a:focus { color: #8BBBD3; text-decoration: none; text-shadow: 0px 0px 2px #000; }
-.branding-head{margin-top:16px}
-.branding-info{width:830px;padding:0 20px}
-#footer-logo{height:80px}
-
-
-/**
- * @section 2. Misc
+ * @section 2. Content
  *
- * Everything which doesn't fit anywhere else.
+ * Styles for the main content block.
  **/
-.error-message {text-align: center; margin-top: 150px;}
-hr { border-color: #E5E5E5 -moz-use-text-color -moz-use-text-color; }
+#content{
+    margin-top: 65px;
+    margin-bottom: 4px;
+}
 
-.component {
-    margin-bottom: 3em;
+.v-center {
+    top: 50%;
 }
 
 #main p:first-of-type {
     margin-top: 0px;
     margin-bottom: 0px;
 }
-/* #main h1:first-of-type, */
-/* #main h2:first-of-type, */
-/* #main h3:first-of-type, */
-/* #main h4:first-of-type, */
-/* #main h5:first-of-type, */
-/* #main h6:first-of-type { */
-/*     margin-top: 0px; */
-/* } */
 
 #main, #toc {
     padding-top: 20px;
@@ -102,11 +89,21 @@ hr { border-color: #E5E5E5 -moz-use-text-color -moz-use-text-color; }
     margin-top: 10px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     cursor: pointer;
 }
 
-h1, h2, h3, h4, h5, h6,
+#main h1,
+#main h2,
+#main h3,
+#main h4,
+#main h5,
+#main h6,
 section,
 .anchor,
 a[name] {
@@ -114,23 +111,22 @@ a[name] {
     margin-top: -60px;
 }
 
-h1:before {
-    display: block;
-    content: " ";
-    height: 20px;
-}
-h2:before {
-    display: block;
-    content: " ";
-    height: 15px;
-}
-h3:before,
-h4:before,
-h5:before,
-h6:before {
+#main h1:before,
+#main h2:before,
+#main h3:before,
+#main h4:before,
+#main h5:before,
+#main h6:before {
     display: block;
     content: " ";
     height: 10px;
+}
+
+#main h1:before {
+    height: 20px;
+}
+#main h2:before {
+    height: 15px;
 }
 
 #main h1:first-of-type:before,
@@ -138,36 +134,168 @@ h6:before {
     height: 0px;
 }
 
-/* a[name] { */
-/*     display: inline-block; /* required for webkit browsers */ */
-/* } */
+.breadcrumb {
+    margin-bottom: 0px;
+    padding: 8px 0px;
+    background-color: transparent;
+}
 
+#top-jumper {
+    display: none;
+    cursor: pointer;
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+}
+
+#top-jumper > .btn {
+    margin-top: 25px;
+}
+
+.component {
+    margin-bottom: 3em;
+}
+
+hr {
+    border-color: #E5E5E5 -moz-use-text-color -moz-use-text-color;
+}
+
+pre {
+    background-image: url('/assets/code.png');
+    background-position: top right;
+    background-repeat: no-repeat;
+}
 
 /**
- * @section 3. Bootstrap extension
+ * @section 3. Footer
+ **/
+#footer{
+    height: 140px;
+    padding: 16px 0;
+    border-top: 5px solid #222222;
+    background-color: #32708F;
+    color: #fff;
+    background-image: url("/assets/bubbles.png");
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15) inset;
+}
+
+#footer a {
+    color: #fff;
+}
+
+#footer a:hover,
+#footer a:focus {
+    color: #8BBBD3;
+    text-decoration: none;
+    text-shadow: 0px 0px 2px #000;
+}
+
+.branding-head {
+    margin-top: 16px;
+}
+
+.branding-info {
+    width: 830px;
+    padding: 0 20px;
+}
+
+#footer-logo {
+    height: 80px;
+}
+
+/**
+ * @section 4. Misc
+ *
+ * Everything which doesn't fit anywhere else.
+ **/
+
+.error-message {
+    text-align: center;
+    margin-top: 150px;
+}
+
+/**
+ * @section 5. Bootstrap extension
  *
  * Everything which extends the default bootstrap dist.
  **/
-.badge-white { background-color: #FFFFFF; color: #686868; }
-.badge-white[href]:hover, .badge-white[href]:focus { background-color: #E1E1E1; }
-.badge-primary { background-color: #428bca; }
-.badge-primary[href]:hover, .badge-primary[href]:focus { background-color: #3071a9; }
-.badge-success { background-color: #5cb85c; }
-.badge-success[href]:hover, .badge-success[href]:focus { background-color: #449d44; }
-.badge-info { background-color: #5bc0de; }
-.badge-info[href]:hover, .badge-info[href]:focus { background-color: #31b0d5; }
-.badge-warning { background-color: #f0ad4e; }
-.badge-warning[href]:hover, .badge-warning[href]:focus { background-color: #ec971f; }
-.badge-danger { background-color: #d9534f; }
-.badge-danger[href]:hover, .badge-danger[href]:focus { background-color: #c9302c; }
+.badge-white {
+    background-color: #FFFFFF; color: #686868;
+}
 
-.navbar .input-group-addon, .navbar .input-group-btn { width: auto; }
+.badge-white[href]:hover,
+.badge-white[href]:focus {
+    background-color: #E1E1E1;
+}
 
-.fa-6x { font-size: 6em; }
-.fa-7x { font-size: 7em; }
-.fa-8x { font-size: 8em; }
-.fa-9x { font-size: 9em; }
-.fa-10x { font-size: 10em; }
+.badge-primary {
+    background-color: #428bca;
+}
+
+.badge-primary[href]:hover,
+.badge-primary[href]:focus {
+    background-color: #3071a9;
+}
+
+.badge-success {
+    background-color: #5cb85c;
+}
+
+.badge-success[href]:hover,
+.badge-success[href]:focus {
+    background-color: #449d44;
+}
+
+.badge-info {
+    background-color: #5bc0de;
+}
+
+.badge-info[href]:hover,
+.badge-info[href]:focus {
+    background-color: #31b0d5;
+}
+
+.badge-warning {
+    background-color: #f0ad4e;
+}
+
+.badge-warning[href]:hover,
+.badge-warning[href]:focus {
+    background-color: #ec971f;
+}
+
+.badge-danger {
+    background-color: #d9534f;
+}
+
+.badge-danger[href]:hover,
+.badge-danger[href]:focus {
+    background-color: #c9302c;
+}
+
+.navbar .input-group-addon,
+.navbar .input-group-btn {
+    width: auto;
+}
+
+.fa-6x {
+    font-size: 6em;
+}
+.fa-7x {
+    font-size: 7em;
+}
+.fa-8x {
+    font-size: 8em;
+}
+.fa-9x {
+    font-size: 9em;
+}
+.fa-10x {
+    font-size: 10em;
+}
 
 .fa-border {
     background-color: #FFFFFF;
@@ -207,6 +335,12 @@ h6:before {
 .margin-bottom-grande {
     margin-bottom: 18em;
 }
+
+/**
+ * @section 6. Responsive styles
+ *
+ * All responsive styles.
+ **/
 
 @media (max-width: 767px) {
 

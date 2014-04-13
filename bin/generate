@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+var path = require('path');
+var rootPath = path.resolve(__dirname, '..');
+
 /**
  * Setup assets and build directory.
  */
@@ -12,12 +15,34 @@ assets.copyAssets();
  * Generate documentation.
  */
 var Documentation = require('./helpers/documentation');
+var File = require('./helpers/file');
+
+var frameworkEntry = {
+    _name: 'Framework Documentation',
+    _path: '/'
+};
+
+var readme = new File({
+    entry: 'readme',
+    icon: 'fa-file-text-o',
+    breadcrumbs: [ frameworkEntry ],
+    inputPath: path.join(rootPath, 'node_modules', 'greppy', 'README.md')
+}).build();
+
+var changelog = new File({
+    entry: 'changelog',
+    icon: 'fa-clock-o',
+    breadcrumbs: [ frameworkEntry ],
+    inputPath: path.join(rootPath, 'node_modules', 'greppy', 'CHANGELOG.md')
+}).build();
 
 var examples = new Documentation({
-    entry: 'examples'
+    entry: 'examples',
+    breadcrumbs: [ frameworkEntry ]
 }).build();
 
 var guide = new Documentation({
-    entry: 'guide'
+    entry: 'guide',
+    breadcrumbs: [ frameworkEntry ]
 }).build();
 
