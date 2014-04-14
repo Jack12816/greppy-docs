@@ -20,6 +20,20 @@ Docs.prototype.scrollTo = function(el, speed)
 };
 
 /**
+ * Scroll to an element with a specific offset.
+ *
+ * @param {Object} el - jQuery Object
+ * @param {Number} offset - Extra offset we add
+ * @param {Number} [speed] - Speed for scrolling. Default: 300
+ */
+Docs.prototype.scrollToWithOffset = function(el, offset, speed)
+{
+    $("html, body").animate({
+        scrollTop: el.offset().top + offset
+    }, speed || 300);
+};
+
+/**
  * Init the top jumper button.
  */
 Docs.prototype.initTopJumper = function()
@@ -69,6 +83,84 @@ Docs.prototype.initTopJumper = function()
 };
 
 /**
+ * Init a source file.
+ */
+Docs.prototype.initSourceFile = function()
+{
+    var self = this;
+
+    var readFragment = function()
+    {
+        var range = !!~location.hash.indexOf('-');
+        $('.line').removeClass('active');
+
+        if (range) {
+
+            range = location.hash.replace('#', '')
+                                 .replace(/L/gi, '')
+                                 .split('-');
+
+            var start = parseInt(range.shift());
+            var end = parseInt(range.shift());
+
+            if (isNaN(start) || isNaN(end)) {
+                return;
+            }
+
+            for (var i = start; i <= end; i++) {
+                $('#L' + i).toggleClass('active');
+            }
+
+            start = $('#L' + start);
+
+        } else {
+            var start = $(location.hash);
+            start.toggleClass('active');
+        }
+
+        self.scrollToWithOffset(start, -80);
+
+        return false;
+    };
+
+    // Fire the first time
+    readFragment();
+
+    // Bind for in-page editing
+    window.onhashchange = readFragment;
+
+    var writeFragment = function(replacement)
+    {
+        location.hash = '#' + replacement;
+    };
+
+    $('.line-nr').on('click', function(e) {
+
+        if (e.shiftKey) {
+
+            var start = $('.line.active').attr('id') || 'L1';
+            var end = $(this).parent().attr('id');
+            writeFragment(start + '-' + end);
+
+            e.preventDefault();
+            return false;
+        }
+
+        $('.line').removeClass('active');
+        var cur = $(this);
+        var parent = cur.parent();
+        parent.toggleClass('active');
+        writeFragment(parent.attr('id'));
+
+        e.preventDefault();
+        return false;
+    });
+
+    // Provide a fluent interface
+    return this;
+};
+
+/**
  * Run this on a initialized document.
  */
 $(document).ready(function() {
@@ -81,6 +173,15 @@ $(document).ready(function() {
     /**
      * Run all init methods.
      */
-    docs.initTopJumper();
+    docs.initTopJumper()
+        .initSourceFile();
+
+    /**
+     * Autostart tooltips
+     */
+    $('*[data-toggle=tooltip]').tooltip({
+        html: true,
+        container: 'body'
+    });
 });
 

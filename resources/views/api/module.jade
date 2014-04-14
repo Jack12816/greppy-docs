@@ -1,0 +1,57 @@
+extends ../layout
+include ../mixins/_subsection
+include ../mixins/_api
+
+block content
+
+  .row
+    .col-sm-offset-3.col-sm-9
+      h1(id="#{slug(section._name).toLowerCase()}")
+        i.fa.fa-plus-square-o
+        |  #{section._name} Namespace
+
+  .row
+    .col-sm-offset-3.col-sm-9
+      ol.breadcrumb
+        each crumb in breadcrumbs
+          li
+            a(href="#{crumb._path}") #{crumb._name}
+        li.active
+          span #{section._name}
+
+  .row
+    .col-lg-12
+      hr
+
+  .row
+    .col-sm-3#toc
+      ul
+        li
+          a(href="##{slug(section._name).toLowerCase()}") #{section._name} Namespace
+          ul
+            unless (0 === subsections.length)
+              li
+                a(href="#sub-namespaces") Sub-namespaces
+            unless (0 === section._classes.length)
+              li
+                a(href="#classes") Classes
+                ul
+                  each classObj in section._classes
+                    +classToC(classObj)
+
+    .col-sm-9#main
+
+      unless (0 === subsections.length)
+        .row
+          .col-lg-12
+            h1#sub-namespaces Sub-namespaces
+            each section in subsections
+              +subsection(section)
+
+      unless (0 === section._classes.length)
+        .row
+          .col-lg-12
+            h1#classes Classes
+              each classObj in section._classes
+                +classDescription(classObj)
+

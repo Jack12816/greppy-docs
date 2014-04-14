@@ -1,0 +1,65 @@
+mixin methodDescription(method, classObj)
+  .row
+    .col-lg-12
+      h3(id="#{method.slug}")
+        i.fa.fa-puzzle-piece
+        |  #{method.name}
+        .pull-right
+          a(
+            href="#{classObj.codePath}##{method.position}",
+            data-toggle="tooltip",
+            data-placement="top",
+            data-title="View source"
+          ).btn.btn-info
+            i.fa.fa-code
+      .method
+        p #{method.description}
+        .bs-callout.bs-callout-info
+          h4 Signature
+          p #{method.signature}
+
+        unless (0 === method.params.length)
+          h4 Parameters
+          ul.parameters
+            each param in method.params
+              li.parameter
+                if (true === param.optional)
+                  b(
+                    data-toggle="tooltip",
+                    data-placement="top",
+                    data-title="This parameter is optional"
+                  ) [#{param.name}]
+                else
+                  b #{param.name}
+                ul
+                  li #{param.description}
+                  if (param.type.names)
+                    if (1 === param.type.names.length)
+                      li Type: #{param.type.names.join('')}
+                    else
+                      li Types: #{param.type.names.join(', ')}
+
+
+mixin classDescription(classObj)
+  br
+  hr
+  h2(id="#{classObj.slug}") #{classObj.name}
+  each method in classObj.methods
+    +methodDescription(method, classObj)
+
+mixin classToC(classObj)
+  li
+    a(href="##{classObj.slug}") #{classObj.name}
+    ul
+      each method in classObj.methods
+        li
+          a(href="##{method.slug}") #{method.name}
+
+mixin classSourceToC(classObj)
+  li
+    a(href="##{classObj.position}") #{classObj.name}
+    ul
+      each method in classObj.methods
+        li
+          a(href="##{method.position}") #{method.name}
+

@@ -11,6 +11,7 @@ var jade = require('jade');
 var fs = require('fs');
 var extend = require('extend');
 var util = require('util');
+var slug = require('slug');
 
 /**
  * @construct
@@ -22,6 +23,10 @@ var Section = function(options)
     var rootPath = path.resolve(__dirname, '../..');
 
     var defaultOptions = {
+        indexOutput: true,
+        outputFilePrefix: '',
+        outputFileExt: 'html',
+        outputFileameProperty: '_name',
         entry: '',
         entryViewPath: path.join(rootPath, 'resources', 'views', 'index', '%s'),
         subViewPath: path.join(rootPath, 'resources', 'views', 'index', '%s')
@@ -31,15 +36,19 @@ var Section = function(options)
     this.options = extend({}, defaultOptions, options || {});
 
     // Replace paths
-    this.options.entryViewPath = util.format(
-        this.options.entryViewPath,
-        this.options.entry + '.jade'
-    );
+    if (this.options.entryViewPath.contains('%s')) {
+        this.options.entryViewPath = util.format(
+            this.options.entryViewPath,
+            this.options.entry + '.jade'
+        );
+    }
 
-    this.options.subViewPath = util.format(
-        this.options.subViewPath,
-        'subsection.jade'
-    );
+    if (this.options.subViewPath.contains('%s')) {
+        this.options.subViewPath = util.format(
+            this.options.subViewPath,
+            'subsection.jade'
+        );
+    }
 
     this.package = require(path.join(rootPath, 'package.json'));
 };
@@ -54,6 +63,7 @@ var Section = function(options)
 Section.prototype.render = function(paths, section, sections)
 {
     var self = this;
+    var skipWrite = false;
 
     // Setup sections paths if not extist
     if (!sections) {
@@ -67,10 +77,32 @@ Section.prototype.render = function(paths, section, sections)
 
     // Build the output path
     var joinPaths  = [this.options.buildPath];
-    joinPaths      = joinPaths.concat(paths);
-    var outputPath = path.join.apply(this, joinPaths);
-    joinPaths.push('index.html');
-    var outputFile = path.join.apply(this, joinPaths);
+
+    if (true === this.options.indexOutput) {
+
+        joinPaths      = joinPaths.concat(paths);
+        var outputPath = path.join.apply(this, joinPaths);
+        joinPaths.push('index.' + this.options.outputFileExt);
+        var outputFile = path.join.apply(this, joinPaths);
+
+    } else {
+
+        var filename = section[this.options.outputFileameProperty];
+
+        if (!filename) {
+            skipWrite = true;
+        }
+
+        joinPaths      = joinPaths.concat(paths);
+        var outputPath = path.join.apply(this, joinPaths);
+        joinPaths.push(
+            this.options.outputFilePrefix +
+            section[this.options.outputFileameProperty] +
+            '.' +
+            this.options.outputFileExt
+        );
+        var outputFile = path.resolve(path.join.apply(this, joinPaths));
+    }
 
     // Get the view path
     var viewPath = this.options.subViewPath;
@@ -111,20 +143,24 @@ Section.prototype.render = function(paths, section, sections)
 
     // Render the HTML
     var html = jade.renderFile(viewPath, {
-        pretty: true,
+        pretty: false,
         package: this.package,
         section: section,
         subsections: subsections,
-        breadcrumbs: sections
+        breadcrumbs: sections,
+        slug: slug
     });
 
-    // Write rendered file
-    fs.writeFileSync(outputFile, html);
+    if (false === skipWrite) {
 
-    console.log(
-        'Write file: ' +
-        outputFile.replace(this.rootPath, '')
-    );
+        // Write rendered file
+        fs.writeFileSync(outputFile, html);
+
+        console.log(
+            'Write file: ' +
+            outputFile.replace(this.rootPath, '')
+        );
+    }
 
     // We are done for this path
     if (0 === keys.length) {

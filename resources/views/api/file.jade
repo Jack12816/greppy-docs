@@ -1,0 +1,41 @@
+extends ../layout
+include ../mixins/_subsection
+include ../mixins/_api
+
+block content
+
+  .row
+    .col-sm-offset-3.col-sm-9
+      h1(id="#{slug(section._name).toLowerCase()}")
+        i.fa.fa-file-text-o
+        |  #{section._file.name}
+
+  .row
+    .col-sm-offset-3.col-sm-9
+      ol.breadcrumb
+        each crumb in breadcrumbs
+          li
+            a(href="#{crumb._path}") #{crumb._name}
+        li.active
+          span #{section._file.name}
+
+  .row
+    .col-lg-12
+      hr
+
+  .row
+    .col-sm-3#toc
+      ul
+        li
+          a(href="#") Classes
+          ul
+            each classObj in section._file.classes
+              +classSourceToC(classObj)
+
+    .col-sm-9#main-code
+      pre.line-numbers
+        each line, nr in section._file.content.split('\n')
+          p.line(id="L#{nr+1}")
+            a.line-nr(href="#L#{nr+1}")
+            span.line-content !{line}
+

@@ -1,7 +1,33 @@
 #!/usr/bin/env node
 
-var path = require('path');
-var rootPath = path.resolve(__dirname, '..');
+/**
+ * Annotate classes.
+ */
+var API           = require('./helpers/api');
+var File          = require('./helpers/file');
+var Documentation = require('./helpers/documentation');
+
+/**
+ * Defaults.
+ */
+var frameworkEntry = {
+    _name: 'Framework Documentation',
+    _path: '/'
+};
+
+/**
+ * Generate API documentation.
+ */
+var api = new API({
+    breadcrumbs: [ frameworkEntry ]
+}).build();
+
+
+
+
+return;
+
+
 
 /**
  * Setup assets and build directory.
@@ -14,14 +40,6 @@ assets.copyAssets();
 /**
  * Generate documentation.
  */
-var Documentation = require('./helpers/documentation');
-var File = require('./helpers/file');
-
-var frameworkEntry = {
-    _name: 'Framework Documentation',
-    _path: '/'
-};
-
 var readme = new File({
     entry: 'readme',
     icon: 'fa-file-text-o',

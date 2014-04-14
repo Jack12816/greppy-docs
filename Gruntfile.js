@@ -17,7 +17,10 @@ module.exports = function(grunt) {
                 files: {
                     'build/index.html': [
                         'resources/views/index/index.jade'
-                    ]
+                    ],
+                    // 'build/api/index.html': [
+                    //     'resources/views/api/test.jade'
+                    // ]
                 }
             }
         },
@@ -65,7 +68,7 @@ module.exports = function(grunt) {
                     'Gruntfile.js',
                     'resources/public/**'
                 ],
-                tasks: ['generate', 'assets']
+                tasks: 'default'
             },
             content: {
                 options: {
@@ -76,7 +79,7 @@ module.exports = function(grunt) {
                     'docs/**',
                     'resources/views/**'
                 ],
-                tasks: 'generate'
+                tasks: 'default'
             },
             build: {
                 options: {

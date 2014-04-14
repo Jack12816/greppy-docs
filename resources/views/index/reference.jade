@@ -1,0 +1,28 @@
+extends ../section
+include ../mixins/_subsection
+
+block header
+
+  .row
+    .col-lg-12
+      h1
+        i.fa.fa-code
+        |  Reference
+  .row
+    .col-lg-12
+      ol.breadcrumb
+        each crumb in breadcrumbs
+          li
+            a(href="#{crumb._path}") #{crumb._name}
+        li.active
+          span #{section._name}
+  .row
+    .col-lg-12
+      hr
+
+block subsections
+
+  .row.text-center
+    each section in subsections
+      +subsection(section)
+
