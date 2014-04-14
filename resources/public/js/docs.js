@@ -91,6 +91,10 @@ Docs.prototype.initSourceFile = function()
 
     var readFragment = function()
     {
+        if ('' === location.hash) {
+            return;
+        }
+
         var range = !!~location.hash.indexOf('-');
         $('.line').removeClass('active');
 
