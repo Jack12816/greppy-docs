@@ -39,7 +39,7 @@ Markdown.prototype.buildTableOfContents = function(content)
         if (/^#/.test(line)) {
 
             var heading = line.replace(/^[#]+ /, '').trim();
-            var headingSlug = slug(heading).toLowerCase();
+            var headingSlug = slug(heading).toLowerCase().replace(/\./g, '-');
             var mdLevel = line.replace(/[^#]+/, '').trim();
 
             mdLevel = mdLevel.replace(/#/g, '*')

@@ -2,7 +2,10 @@ mixin methodDescription(method, classObj)
   .row
     .col-lg-12
       h3(id="#{method.slug}")
-        i.fa.fa-puzzle-piece
+        if ('constructor' === method.name)
+          i.fa.fa-asterisk
+        else
+          i.fa.fa-puzzle-piece
         |  #{method.name}
         .pull-right
           a(
@@ -39,11 +42,31 @@ mixin methodDescription(method, classObj)
                     else
                       li Types: #{param.type.names.join(', ')}
 
+        unless (0 === method.returns.length)
+          h4 Returns
+          ul.returns
+            each ret in method.returns
+              li.return
+                if (ret.type && ret.type.names)
+                  if (1 === ret.type.names.length)
+                    b #{ret.type.names.join('')}
+                  else
+                    b #{ret.type.names.join(', ')}
+                else
+                  b Undocumented
+              ul
+                if (ret.description)
+                  li #{ret.description}
+                else
+                  li The return value is not further described
 
 mixin classDescription(classObj)
   br
   hr
-  h2(id="#{classObj.slug}") #{classObj.name}
+  h2(id="#{classObj.slug}")
+    if (classObj.icon)
+      i.fa(class="#{classObj.icon}")
+    |  #{classObj.name}
   each method in classObj.methods
     +methodDescription(method, classObj)
 

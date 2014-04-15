@@ -161,16 +161,22 @@ a[name] {
 
 .method {
     padding-left: 2em;
+    margin-bottom: 2em;
 }
 
-.parameters li {
+.returns, .parameters {
+    padding-left: 0px;
+}
+
+.returns li, .parameters li {
     list-style-type: none !important;
     margin-bottom: 10px;
-    margin-left: -20px;
+    padding-left: 0px;
 }
 
-.parameters ul  {
+.returns ul, .parameters ul  {
     margin-top: 10px;
+    padding-left: 20px;
 }
 
 hr {
@@ -223,6 +229,18 @@ pre.line-numbers p a:before {
 pre.line-numbers .active {
     /* background-color: rgba(255, 255, 204, 0.7); */
     background-color: #FCFCD8;
+}
+
+.popover {
+    max-width: 400;
+}
+
+.popover .media {
+    min-width: 155px;
+}
+
+.no-wrap {
+    white-space: nowrap;
 }
 
 /**

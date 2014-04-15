@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+/**
+ * Annotate classes.
+ */
+var API  = require('./helpers/api');
+
+/**
+ * Defaults.
+ */
+var frameworkEntry = {
+    _name: 'Framework Documentation',
+    _path: '/'
+};
+
+/**
+ * Generate API documentation.
+ */
+var api = new API({
+    breadcrumbs: [ frameworkEntry ],
+    debug: {
+        enabled: false,
+        exit: true,
+        fullDump: false,
+        nrOfFiles: 31
+    }
+}).build();
+

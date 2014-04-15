@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+/**
+ * Setup assets and build directory.
+ */
+var assets = new (require('./helpers/assets'))();
+
+assets.createBuildDirectories();
+assets.copyAssets();
+

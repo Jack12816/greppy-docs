@@ -27,7 +27,7 @@ Assets.prototype.createBuildDirectories = function()
 {
     wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build'));
     wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'assets'));
-    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'api'));
+    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'reference'));
     wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'examples'));
     wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'guide'));
 };

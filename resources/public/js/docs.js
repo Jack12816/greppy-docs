@@ -187,5 +187,13 @@ $(document).ready(function() {
         html: true,
         container: 'body'
     });
+
+    /**
+     * Autostart popovers
+     */
+    $('*[data-toggle=popover]').popover({
+        html: true,
+        container: 'body'
+    });
 });
 

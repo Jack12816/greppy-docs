@@ -3,39 +3,18 @@
 /**
  * Annotate classes.
  */
-var API           = require('./helpers/api');
+var path          = require('path');
 var File          = require('./helpers/file');
 var Documentation = require('./helpers/documentation');
 
 /**
  * Defaults.
  */
+var rootPath = path.resolve(__dirname, '..');
 var frameworkEntry = {
     _name: 'Framework Documentation',
     _path: '/'
 };
-
-/**
- * Generate API documentation.
- */
-var api = new API({
-    breadcrumbs: [ frameworkEntry ]
-}).build();
-
-
-
-
-return;
-
-
-
-/**
- * Setup assets and build directory.
- */
-var assets = new (require('./helpers/assets'))();
-
-assets.createBuildDirectories();
-assets.copyAssets();
 
 /**
  * Generate documentation.

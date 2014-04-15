@@ -18,6 +18,7 @@ var Signature = require('./signature');
 var Classifier = function(basePath)
 {
     this.basePath = basePath || '';
+    this.sanitizer = new (require('../sanitizer'))();
 };
 
 /**
@@ -71,6 +72,59 @@ Classifier.prototype.strip = function(blocks)
 };
 
 /**
+ * Add constructor method for a class object.
+ *
+ * @param {Object} classObj - Class object to extend
+ * @return {Object} Modified class object
+ */
+Classifier.prototype.addConstructor = function(classObj)
+{
+    var method = {
+        name: 'constructor',
+        kind: 'function',
+        scope: 'instance',
+        memberof: classObj.longname,
+        longname: classObj.longname + '#constructor',
+        filename: classObj.filename,
+        path: classObj.path,
+        lineno: classObj.lineno,
+        range: classObj.range,
+        loc: classObj.loc,
+        position: 'L' + classObj.lineno,
+        params: classObj.params || [],
+        returns: classObj.params || [
+            {
+                description: 'A new instance of ' + classObj.name,
+                type: {
+                    names: ['Object', classObj.name]
+                }
+            }
+        ]
+    };
+
+    if (classObj.description) {
+        method.description = classObj.description;
+    } else {
+        method.description = 'With the help of this method you can ' +
+            'create a new instance of ' + classObj.name;
+    }
+
+    if (method.loc && method.loc.end) {
+        method.position += '-L' + method.loc.end.line;
+    }
+
+    var signature = new Signature(method);
+    method.signature = signature.get();
+
+    var memberof = method.memberof.split('~').pop();
+    method.slug = slug(memberof + '-' + method.name).toLowerCase();
+
+    classObj.methods.push(method);
+
+    return classObj;
+};
+
+/**
  * Setup a classified module.
  *
  * @param {Array} blocks - Analysed code blocks
@@ -78,6 +132,7 @@ Classifier.prototype.strip = function(blocks)
  */
 Classifier.prototype.classify = function(blocks)
 {
+    var self = this;
     var blocks = this.strip(blocks);
 
     // Setup a class map
@@ -95,7 +150,11 @@ Classifier.prototype.classify = function(blocks)
             var longname = item.longname.split('/').pop().replace('~', '-');
             item.slug = slug(longname).toLowerCase();
 
+            item.icon = self.sanitizer.nameToIcon(item.name);
+
             extend(classes[item.longname], item);
+
+            classes[item.longname] = self.addConstructor(classes[item.longname]);
         }
     });
 

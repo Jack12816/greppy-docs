@@ -1,41 +1,33 @@
+# Commands and Paths
 SHELL=/bin/bash
-REPORTER ?= list
 
-define print
-	@echo -e "\n  \E[0;33m${1} \E[0m..";
-endef
+MAKE := make
+GRUNT := $(shell pwd)/node_modules/.bin/grunt
 
-define md2html
-	$(call print,"Prepare ${1} chapter")
-    @echo
-	@echo > "./build/chaper_${1}.md"
-	@cd "docs/${1}"; \
-	for file in $$(find . -regex ".*\.\(md\)" 2>/dev/null | sort); do \
-		echo "    $${file}"; \
-		cat "$${file}" >> "../../build/chaper_${1}.md"; \
-	done; \
+.PHONY: install build clean watch serve
 
-	@cat "./build/chaper_${1}.md" | ./bin/prepare-anchors "./build/chaper_${1}.md"
+all: build
 
-	@./node_modules/.bin/marked --gfm --tables --lang-prefix "" "./build/chaper_${1}.md" > "./build/chaper_${1}.html";
-endef
+install:
+	###### Install ######
+	###### Node.js ######
+	@npm install
+	###### Bower ######
+	@bower install
 
-all: docs
-
-docs: clean docs-md docs-api
-
-docs-md:
-	$(call md2html,"guide")
-	$(call md2html,"examples")
-
-docs-api:
-	$(call print,"Generate documentation")
-	@./node_modules/.bin/jsdoc -c ./jsdoc.conf.json ./node_modules/greppy/lib ./node_modules/greppy/README.md
+build:
+	###### Build ######
+	@${GRUNT}
 
 clean:
-	$(call print,"Cleanup documentation files")
-	@rm -f ./build/*.html*
-	@rm -f ./build/chaper_*.md
+	###### Cleanup ######
+	@rm -f ./build
 
-.PHONY: test docs clean
+watch:
+	###### Watch ######
+	@${GRUNT} watch
+
+serve:
+	###### Serve ######
+	@${GRUNT} connect
 

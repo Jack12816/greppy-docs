@@ -12,6 +12,9 @@ var fs = require('fs');
 var extend = require('extend');
 var util = require('util');
 var slug = require('slug');
+var crypto = require('crypto');
+var mustache = require('mustache');
+var colors = require('colors');
 
 /**
  * @construct
@@ -20,7 +23,7 @@ var slug = require('slug');
  */
 var Section = function(options)
 {
-    var rootPath = path.resolve(__dirname, '../..');
+    this.rootPath = path.resolve(__dirname, '../..');
 
     var defaultOptions = {
         indexOutput: true,
@@ -28,8 +31,8 @@ var Section = function(options)
         outputFileExt: 'html',
         outputFileameProperty: '_name',
         entry: '',
-        entryViewPath: path.join(rootPath, 'resources', 'views', 'index', '%s'),
-        subViewPath: path.join(rootPath, 'resources', 'views', 'index', '%s')
+        entryViewPath: path.join(this.rootPath, 'resources', 'views', 'index', '%s'),
+        subViewPath: path.join(this.rootPath, 'resources', 'views', 'index', '%s')
     };
 
     // Assemble the options
@@ -50,7 +53,62 @@ var Section = function(options)
         );
     }
 
-    this.package = require(path.join(rootPath, 'package.json'));
+    this.package = require(path.join(this.rootPath, 'package.json'));
+};
+
+/**
+ * Prepare author.
+ *
+ * @param {String} author - Author string like Fullname <email>
+ * @return {Object} Prepared author object
+ */
+Section.prototype.prepareAuthor = function(author)
+{
+    if ('object' === typeof author) {
+        return author;
+    }
+
+    author = author.toString();
+
+    var fullname = [];
+    var email = '';
+
+    author.split(' ').forEach(function(item) {
+
+        if (/^</.test(item)) {
+            email = item.replace(/^</, '')
+                        .replace(/>$/, '');
+        } else {
+            fullname.push(item);
+        }
+    });
+
+    return {
+        fullname: fullname.join(' '),
+        email: email,
+        gravatar: crypto.createHash('md5').update(email).digest('hex')
+    };
+};
+
+/**
+ * View helper to output a author.
+ *
+ * @param {String} author - Author string like Fullname <email>
+ * @return {String} Rendered author HTML string
+ */
+Section.prototype.renderAuthor = function(author)
+{
+    var author = this.prepareAuthor(author);
+
+    return mustache.render([
+        '<div class="media">',
+            '<a class="pull-left" href="#">',
+                '<img class="media-object img-thumbnail" ' +
+                'src="http://gravatar.com/avatar/{{gravatar}}?s=50">',
+            '</a>',
+            '<div class="media-body">{{fullname}}</div>',
+        '</div>'
+    ].join('\n'), author);
 };
 
 /**
@@ -148,7 +206,10 @@ Section.prototype.render = function(paths, section, sections)
         section: section,
         subsections: subsections,
         breadcrumbs: sections,
-        slug: slug
+        slug: slug,
+        helper: {
+            author: self.renderAuthor.bind(self)
+        }
     });
 
     if (false === skipWrite) {
@@ -157,8 +218,11 @@ Section.prototype.render = function(paths, section, sections)
         fs.writeFileSync(outputFile, html);
 
         console.log(
-            'Write file: ' +
-            outputFile.replace(this.rootPath, '')
+            util.format(
+                'File %s created: %s',
+                (outputFile.replace(this.rootPath + '/', '')).cyan,
+                fs.statSync(outputFile).size.memory()
+            )
         );
     }
 
@@ -178,7 +242,7 @@ Section.prototype.render = function(paths, section, sections)
         var newSections = [].concat(sections);
         newSections.push(section);
 
-        self.render(newPaths, section[key], newSections);
+        self.render.call(self, newPaths, section[key], newSections);
     });
 };
 

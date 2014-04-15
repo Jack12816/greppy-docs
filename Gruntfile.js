@@ -17,10 +17,7 @@ module.exports = function(grunt) {
                 files: {
                     'build/index.html': [
                         'resources/views/index/index.jade'
-                    ],
-                    // 'build/api/index.html': [
-                    //     'resources/views/api/test.jade'
-                    // ]
+                    ]
                 }
             }
         },
@@ -53,43 +50,55 @@ module.exports = function(grunt) {
         },
 
         shell: {
-            generate: {
-                command: './bin/generate'
+            docs: {
+                options: {
+                    stdout: true
+                },
+                command: './bin/generate-docs'
+            },
+            api: {
+                options: {
+                    stdout: true
+                },
+                command: './bin/generate-api'
+            },
+            structure: {
+                options: {
+                    stdout: true
+                },
+                command: './bin/build-assets'
             }
         },
 
         watch: {
             main: {
                 options: {
-                    // Start a live reload server on the default port 35729
                     livereload: true
                 },
                 files: [
                     'Gruntfile.js',
                     'resources/public/**'
                 ],
-                tasks: 'default'
+                tasks: 'build'
             },
             content: {
                 options: {
-                    // Start a live reload server on the default port 35729
                     livereload: true
                 },
                 files: [
                     'docs/**',
                     'resources/views/**'
                 ],
-                tasks: 'default'
+                tasks: 'build'
             },
             build: {
                 options: {
-                    // Start a live reload server on the default port 35729
                     livereload: true
                 },
                 files: [
                     'bin/**'
                 ],
-                tasks: 'default'
+                tasks: 'build'
             }
         },
 
@@ -115,8 +124,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-shell');
 
     // Default task
-    grunt.registerTask('generate', ['shell:generate', 'jade']);
+    grunt.registerTask('structure', ['shell:structure']);
+    grunt.registerTask('docs', ['shell:docs']);
+    grunt.registerTask('api', ['shell:api']);
     grunt.registerTask('assets', ['cssmin', 'uglify']);
-    grunt.registerTask('default', ['generate', 'assets']);
+    grunt.registerTask('build', ['assets', 'jade', 'docs', 'api']);
+    grunt.registerTask('default', ['structure', 'build']);
 };
 

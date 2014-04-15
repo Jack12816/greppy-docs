@@ -7,7 +7,10 @@ block content
   .row
     .col-sm-offset-3.col-sm-9
       h1(id="#{slug(section._name).toLowerCase()}")
-        i.fa.fa-plus-square-o
+        if (section._icon)
+          i.fa(class="#{section._icon}")
+        else
+          i.fa.fa-plus-square-o
         |  #{section._name} Namespace
 
   .row
@@ -48,10 +51,23 @@ block content
             each section in subsections
               +subsection(section)
 
+      - var contributors = ''
+      unless (0 === section._contributors.length)
+        each contributor in section._contributors
+          - contributors += helper.author(contributor)
+
       unless (0 === section._classes.length)
         .row
           .col-lg-12
             h1#classes Classes
+              .pull-right
+                unless (0 === section._contributors.length)
+                  i.fa.fa-users(
+                    data-toggle="popover", data-trigger="click",
+                    data-placement="left", data-html="true",
+                    data-title="Contributors", data-content="#{contributors}"
+                  )
+
               each classObj in section._classes
                 +classDescription(classObj)
 

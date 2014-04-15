@@ -1,0 +1,17 @@
+{
+    "uppercase": [
+        "ipc",
+        "icc",
+        "http",
+        "ldap",
+        "i18n",
+        "mvc",
+        "db",
+        "vcs",
+        "json-wsp",
+        "sql",
+        "no-sql"
+    ],
+    "lowercase": [
+    ]
+}

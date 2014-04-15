@@ -28,7 +28,13 @@ var API = function(options)
         entry: 'reference',
         inputPath: path.join(rootPath, 'node_modules', 'greppy', 'lib'),
         buildPath: path.join(rootPath, 'build', '%s'),
-        breadcrumbs: []
+        breadcrumbs: [],
+        debug: {
+            enabled: false,
+            exit: false,
+            fullDump: false,
+            nrOfFiles: 31
+        }
     };
 
     // Assemble the options
@@ -65,44 +71,7 @@ var API = function(options)
     // Setup parser and helpers
     this.parser = new (require('./api/parser'))();
     this.classifier = new (require('./api/classifier'))(this.options.inputPath);
-};
-
-/**
- * Fix highlight.js markup.
- *
- * @param {String} code - Highlighted code
- * @return {String}
- */
-API.prototype.fixHLjsMarkup = function(code)
-{
-    var blockComments = code.match(
-        /<span class="hljs-comment">\/\*\*[^]*?\*\/<\/span>/gi
-    );
-
-    if (!blockComments) {
-        return code;
-    }
-
-    var start = '<span class="hljs-comment">';
-    var end = '</span>';
-
-    blockComments.forEach(function(block) {
-
-        var replacement = block.split('\n').map(function(line) {
-
-            if (/^<span/.test(line)) {
-               return line + end;
-            } else if (/<\/span>$/.test(line)) {
-                return start + line;
-            } else {
-                return start + line + end;
-            }
-        }).join('\n');
-
-        code = code.replace(block, replacement);
-    });
-
-    return code;
+    this.sanitizer = new (require('./sanitizer'))();
 };
 
 /**
@@ -129,8 +98,10 @@ API.prototype.buildStructure = function()
 
     }).sort();
 
-    // @TODO: Debugging trigger
-    files = files.splice(0, 11);
+    // Do some debugging stuff
+    if (true === this.options.debug.enabled) {
+        files = files.splice(0, this.options.debug.nrOfFiles);
+    }
 
     // Parse the entire source tree and classify it afterwards
     var result = self.classifier.classify(this.parser.parse(files));
@@ -167,7 +138,7 @@ API.prototype.buildStructure = function()
             codeMap[item.codePath].parts.push(
                 item.name.split('/').pop()
             );
-            codeMap[item.codePath].content = self.fixHLjsMarkup(
+            codeMap[item.codePath].content = self.sanitizer.fixHLjsMarkup(
                 hljs.highlight(
                     'javascript',
                     fs.readFileSync(
@@ -184,46 +155,79 @@ API.prototype.buildStructure = function()
         var cur = struct;
 
         for (var i = 0; i < item.parts.length; i++) {
+
             var part = item.parts[i];
+
+            if (!part) {
+                part = 'root'
+            }
+
             if (i === item.parts.length - 1) {
+
                 if (!cur[part]) {
                     cur[part] = {
-                        _name: part.capitalize(),
+                        _name: self.sanitizer.sanitizeName(part),
+                        _icon: self.sanitizer.nameToIcon(part),
                         _modules: [],
-                        _classes: []
+                        _classes: [],
+                        _classNames: [],
+                        _contributors: []
                     };
                 }
 
-                // @TODO: Debugging trigger
-                // cur[part]._modules.push({
-                //     longname: item.longname,
-                //     classes: item.classes.map(function(item) {
-                //         return item.name
-                //     }),
-                //     parts: item.parts
-                // });
+                // Do some debugging stuff
+                if (true === self.options.debug.enabled &&
+                    false === self.options.debug.fullDump) {
 
-                codePath(item);
-
-                cur[part]._modules.push(item);
-                cur[part]._modules.forEach(function(module) {
-
-                    module.classes.forEach(function(item) {
-                        codePath(item);
-                        cur[part]._classes.push(item);
-                        // item.classes = [];
+                    cur[part]._modules.push({
+                        longname: item.longname,
+                        classes: item.classes.map(function(item) {
+                            return item.name
+                        })
                     });
-                });
+
+                } else {
+
+                    codePath(item);
+
+                    cur[part]._modules.push(item);
+                    cur[part]._modules.forEach(function(module) {
+
+                        module.classes.forEach(function(item) {
+
+                            // Skip already mapped classes
+                            if (~cur[part]._classNames.indexOf(item.longname)) {
+                                return;
+                            }
+
+                            codePath(item);
+                            cur[part]._classes.push(item);
+                            cur[part]._classNames.push(item.longname);
+                        });
+
+                        cur[part]._contributors = cur[part]._contributors.concat(
+                            module.author
+                        );
+                    });
+
+                    cur[part]._contributors = Array.uniq(
+                        cur[part]._contributors
+                    );
+                }
 
                 break;
             }
             if (!cur[part]) {
                 cur[part] = {
-                    _name: part.capitalize(),
+                    _name: self.sanitizer.sanitizeName(part),
+                    _icon: self.sanitizer.nameToIcon(part),
                     _modules: [],
-                    _classes: []
+                    _classes: [],
+                    _classNames: [],
+                    _contributors: []
                 };
             }
+
             cur = cur[part];
         }
     });
@@ -279,10 +283,15 @@ API.prototype.buildStructure = function()
         }
     });
 
-    // @TODO: Debugging trigger
-    // console.log(JSON.stringify(struct, null, 4));
-    // console.log(JSON.stringify(codeStruct, null, 4));
-    // process.exit(1);
+    // Do some debugging stuff
+    if (true === this.options.debug.enabled) {
+
+        console.log(JSON.stringify(struct, null, 4));
+
+        if (true === this.options.debug.exit) {
+            process.exit(1);
+        }
+    }
 
     return {
         code: codeStruct,

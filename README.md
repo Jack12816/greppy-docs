@@ -13,9 +13,9 @@ freenode.
 
 To setup the documentation build environment just run:
 
-    $ npm install
+    $ make install
 
 Build the docs with:
 
-    $ make
+    $ make build
 
