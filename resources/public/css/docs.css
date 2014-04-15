@@ -185,7 +185,7 @@ hr {
 
 pre {
     background-image: url('/assets/code.png');
-    background-position: top right;
+    background-position: right top;
     background-repeat: no-repeat;
 }
 
@@ -201,6 +201,7 @@ pre.line-numbers {
     padding: 0px 0px;
     font-size: 12px;
     line-height: 19px;
+    background-position: right 45px !important;
 }
 
 pre.line-numbers p {
@@ -231,6 +232,10 @@ pre.line-numbers .active {
     background-color: #FCFCD8;
 }
 
+pre.line-numbers #L1 .line-nr {
+    padding-top: 10px;
+}
+
 .popover {
     max-width: 400;
 }
@@ -242,6 +247,18 @@ pre.line-numbers .active {
 .no-wrap {
     white-space: nowrap;
 }
+
+pre .meta {
+    color: #fff;
+    background-color: #32708F;
+    padding: 10px;
+}
+
+pre .meta .filepath {
+    height: 34px;
+    line-height: 34px;
+}
+
 
 /**
  * @section 3. Footer

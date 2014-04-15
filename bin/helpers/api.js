@@ -32,7 +32,9 @@ var API = function(options)
         debug: {
             enabled: false,
             exit: false,
-            fullDump: false,
+            minimalStructure: false,
+            dumpCodeFiles: false,
+            dumpStructure: false,
             nrOfFiles: 31
         }
     };
@@ -118,7 +120,7 @@ API.prototype.buildStructure = function()
         item.codePath = path.join(
             '/',
             self.options.entry,
-            item.path,
+            item.path || 'root',
             item.filename + '.html'
         );
         item.outputCodePath = path.join(
@@ -130,10 +132,12 @@ API.prototype.buildStructure = function()
         if (!codeMap[item.codePath]) {
             codeMap[item.codePath] = {
                 filename: item.filename,
+                path: item.path,
                 inputPath: item.inputCodePath,
                 outputPath: item.outputCodePath,
                 parts: item.parts,
-                classes: item.classes
+                classes: item.classes,
+                contributors: item.author
             };
             codeMap[item.codePath].parts.push(
                 item.name.split('/').pop()
@@ -177,7 +181,7 @@ API.prototype.buildStructure = function()
 
                 // Do some debugging stuff
                 if (true === self.options.debug.enabled &&
-                    false === self.options.debug.fullDump) {
+                    true === self.options.debug.minimalStructure) {
 
                     cur[part]._modules.push({
                         longname: item.longname,
@@ -260,8 +264,13 @@ API.prototype.buildStructure = function()
                         _name: part.capitalize(),
                         _filename: '',
                         _file: {
-                            name: '',
+                            contributors: [],
+                            inputPath: '',
+                            outputPath: '',
                             content: '',
+                            name: '',
+                            path: '',
+                            fullPath: '',
                             classes: []
                         }
                     };
@@ -269,10 +278,13 @@ API.prototype.buildStructure = function()
 
                 cur[part]._filename = item.filename;
                 cur[part]._file = {
-                    inputPath:  item.inputPath,
+                    contributors: (0 !== item.contributors.length) ? Array.uniq(item.contributors) : [],
+                    inputPath: item.inputPath,
                     outputPath: item.outputPath,
                     content: item.content,
                     name: item.filename,
+                    path: item.path,
+                    fullPath: path.join(item.path, item.filename),
                     classes: item.classes
                 };
 
@@ -284,8 +296,13 @@ API.prototype.buildStructure = function()
                     _name: part.capitalize(),
                     _filename: '',
                     _file: {
-                        name: '',
+                        contributors: [],
+                        inputPath: '',
+                        outputPath: '',
                         content: '',
+                        name: '',
+                        path: '',
+                        fullPath: '',
                         classes: []
                     }
                 };
@@ -298,7 +315,13 @@ API.prototype.buildStructure = function()
     // Do some debugging stuff
     if (true === this.options.debug.enabled) {
 
-        console.log(JSON.stringify(struct, null, 4));
+        if (true === this.options.debug.dumpStructure) {
+            console.log(JSON.stringify(struct, null, 4));
+        }
+
+        if (true === this.options.debug.dumpCodeFiles) {
+            console.log(JSON.stringify(codeStruct, null, 4));
+        }
 
         if (true === this.options.debug.exit) {
             process.exit(1);

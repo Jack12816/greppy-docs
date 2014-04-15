@@ -165,6 +165,32 @@ Docs.prototype.initSourceFile = function()
 };
 
 /**
+ * Init source snippets.
+ */
+Docs.prototype.initSourceSnippers = function()
+{
+    $('.code-snippet').on('click', function(e) {
+
+        var cur = $(this);
+        var title = cur.attr('data-snippet-title') || 'Source code snippet';
+        var code = cur.attr('data-snippet-code') || '';
+
+        var dialog = bootbox.alert({
+            title: title,
+            message: '<pre style="margin: 0px 0px -15px;">' + code + '</pre>',
+            backdrop: true,
+            onEscape: function() {}
+        });
+
+        e.preventDefault();
+        return false;
+    });
+
+    // Provide a fluent interface
+    return this;
+};
+
+/**
  * Run this on a initialized document.
  */
 $(document).ready(function() {
@@ -178,6 +204,7 @@ $(document).ready(function() {
      * Run all init methods.
      */
     docs.initTopJumper()
+        .initSourceSnippers()
         .initSourceFile();
 
     /**

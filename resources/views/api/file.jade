@@ -32,8 +32,41 @@ block content
             each classObj in section._file.classes
               +classSourceToC(classObj)
 
+    - var contributors = ''
+    unless (0 === section._file.contributors.length)
+      each contributor in section._file.contributors
+        - contributors += helper.author(contributor)
+
     .col-sm-9#main-code
       pre.line-numbers
+        .meta
+          .filepath #{section._file.path + '/'}
+            b #{section._filename}
+            .pull-right
+              unless (0 === section._file.contributors.length)
+                a(
+                  href="#",
+                  data-toggle="popover", data-trigger="click",
+                  data-placement="left", data-html="true",
+                  data-title="Contributors", data-content="#{contributors}"
+                ).btn.btn-info
+                  i.fa.fa-users
+              |&nbsp;
+              - var className = (section._file.classes[0]) ? section._file.classes[0].name : section._filename.replace(/\.js$/, '').capitalize()
+              a(
+                href="#", data-snippet-title="Class loading snippet",
+                data-snippet-code="var #{className} = greppy.get('#{section._file.fullPath.replace(/\//g, '.').replace(/\.js$/, '')}');",
+                data-toggle="tooltip", data-placement="top", data-title="Show loading snippet"
+              ).btn.btn-info.code-snippet
+                i.fa.fa-code
+              |&nbsp;
+              a(
+                href="https://github.com/Jack12816/greppy/blob/master/lib/#{section._file.fullPath}",
+                data-toggle="tooltip", data-placement="top", data-title="View file on Github",
+                target="_blank"
+              ).btn.btn-info
+                i.fa.fa-github-alt
+
         each line, nr in section._file.content.split('\n')
           p.line(id="L#{nr+1}")
             a.line-nr(href="#L#{nr+1}")

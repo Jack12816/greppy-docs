@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                     'build/assets/docs.min.js': [
                         'bower_components/jquery/dist/jquery.min.js',
                         'bower_components/bootstrap/dist/js/bootstrap.min.js',
+                        'bower_components/bootbox/bootbox.js',
                         'resources/public/js/*'
                     ]
                 }
@@ -79,7 +80,7 @@ module.exports = function(grunt) {
                     'Gruntfile.js',
                     'resources/public/**'
                 ],
-                tasks: 'build'
+                tasks: ['assets']
             },
             content: {
                 options: {
@@ -89,7 +90,7 @@ module.exports = function(grunt) {
                     'docs/**',
                     'resources/views/**'
                 ],
-                tasks: 'build'
+                tasks: ['docs', 'api']
             },
             build: {
                 options: {
@@ -98,7 +99,7 @@ module.exports = function(grunt) {
                 files: [
                     'bin/**'
                 ],
-                tasks: 'build'
+                tasks: ['build']
             }
         },
 
@@ -109,7 +110,8 @@ module.exports = function(grunt) {
                     base: 'build',
                     livereload: true,
                     keepalive: true,
-                    open: false
+                    open: false,
+                    debug: false
                 }
             }
         }

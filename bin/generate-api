@@ -20,9 +20,11 @@ var api = new API({
     breadcrumbs: [ frameworkEntry ],
     debug: {
         enabled: false,
-        exit: true,
-        fullDump: false,
-        nrOfFiles: 31
+        exit: false,
+        minimalStructure: false,
+        dumpCodeFiles: false,
+        dumpStructure: false,
+        nrOfFiles: 71
     }
 }).build();
 

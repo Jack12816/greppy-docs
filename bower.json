@@ -1,15 +1,16 @@
 {
-    "name": "greppy-docs",
-    "version": "0.5.0",
-    "dependencies": {
-        "bootstrap": "~3.1.1",
-        "font-awesome": "~4.0.3"
-    },
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ]
+  "name": "greppy-docs",
+  "version": "0.5.0",
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "font-awesome": "~4.0.3",
+    "bootbox": "~4.2.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
