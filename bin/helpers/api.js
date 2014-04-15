@@ -217,6 +217,7 @@ API.prototype.buildStructure = function()
 
                 break;
             }
+
             if (!cur[part]) {
                 cur[part] = {
                     _name: self.sanitizer.sanitizeName(part),
@@ -245,8 +246,15 @@ API.prototype.buildStructure = function()
         var cur = codeStruct;
 
         for (var i = 0; i < item.parts.length; i++) {
+
             var part = item.parts[i];
+
+            if (!part) {
+                part = 'root'
+            }
+
             if (i === item.parts.length - 1) {
+
                 if (!cur[part]) {
                     cur[part] = {
                         _name: part.capitalize(),
@@ -258,6 +266,7 @@ API.prototype.buildStructure = function()
                         }
                     };
                 }
+
                 cur[part]._filename = item.filename;
                 cur[part]._file = {
                     inputPath:  item.inputPath,
@@ -266,8 +275,10 @@ API.prototype.buildStructure = function()
                     name: item.filename,
                     classes: item.classes
                 };
+
                 break;
             }
+
             if (!cur[part]) {
                 cur[part] = {
                     _name: part.capitalize(),
@@ -279,6 +290,7 @@ API.prototype.buildStructure = function()
                     }
                 };
             }
+
             cur = cur[part];
         }
     });
