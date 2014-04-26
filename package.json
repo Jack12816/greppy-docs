@@ -47,7 +47,10 @@
     "highlight.js": "^8.0.0",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
     "mustache": "^0.8.1",
-    "colors": "^0.6.2"
+    "colors": "^0.6.2",
+    "mpath": "^0.2.1",
+    "moment": "^2.6.0",
+    "xml": "0.0.12"
   },
   "repository": {
     "type": "git",

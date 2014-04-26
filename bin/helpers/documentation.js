@@ -129,6 +129,7 @@ Documentation.prototype.build = function()
 
     // Render sections
     this.section.render(['/'], structure, this.options.breadcrumbs);
+    this.section.flushSitemap();
 };
 
 module.exports = Documentation;

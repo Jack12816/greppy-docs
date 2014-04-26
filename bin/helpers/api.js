@@ -55,7 +55,9 @@ var API = function(options)
 
     // Setup docs sections helper
     var defaultSectionOptions = {
-        subViewPath: path.join(rootPath, 'resources', 'views', 'api', 'module.jade')
+        subViewPath: path.join(rootPath, 'resources', 'views', 'api', 'module.jade'),
+        titleRoot: 'Reference',
+        title: 'Reference &bull; {{section._name}} Namespace'
     };
     this.sectionDocsOptions = extend({}, this.options, defaultSectionOptions);
     this.docsSection = new Section(this.sectionDocsOptions);
@@ -65,7 +67,9 @@ var API = function(options)
         indexOutput: false,
         outputFileameProperty: '_filename',
         outputFilePrefix: '/../',
-        subViewPath: path.join(rootPath, 'resources', 'views', 'api', 'file.jade')
+        subViewPath: path.join(rootPath, 'resources', 'views', 'api', 'file.jade'),
+        titleRoot: 'Reference',
+        title: 'Reference &bull; {{section._file.name}} File'
     };
     this.sectionCodeOptions = extend({}, this.options, defaultSectionOptions);
     this.codeSection = new Section(this.sectionCodeOptions);
@@ -347,9 +351,11 @@ API.prototype.build = function()
 
     // Render docs sections
     this.docsSection.render(['/'], structures.docs, this.options.breadcrumbs);
+    this.docsSection.flushSitemap();
 
     // Render code sections
     this.codeSection.render(['/'], structures.code, this.options.breadcrumbs);
+    this.codeSection.flushSitemap();
 };
 
 module.exports = API;

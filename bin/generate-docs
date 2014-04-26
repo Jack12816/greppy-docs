@@ -4,6 +4,7 @@
  * Annotate classes.
  */
 var path          = require('path');
+var fs            = require('fs');
 var File          = require('./helpers/file');
 var Documentation = require('./helpers/documentation');
 
@@ -17,29 +18,41 @@ var frameworkEntry = {
 };
 
 /**
+ * Clear files.
+ */
+fs.unlink(path.join(rootPath, 'build', 'sitemap.json'));
+fs.unlink(path.join(rootPath, 'build', 'sitemap.xml'));
+
+/**
  * Generate documentation.
  */
 var readme = new File({
     entry: 'readme',
     icon: 'fa-file-text-o',
     breadcrumbs: [ frameworkEntry ],
-    inputPath: path.join(rootPath, 'node_modules', 'greppy', 'README.md')
+    inputPath: path.join(rootPath, 'node_modules', 'greppy', 'README.md'),
+    title: 'Readme'
 }).build();
 
 var changelog = new File({
     entry: 'changelog',
     icon: 'fa-clock-o',
     breadcrumbs: [ frameworkEntry ],
-    inputPath: path.join(rootPath, 'node_modules', 'greppy', 'CHANGELOG.md')
+    inputPath: path.join(rootPath, 'node_modules', 'greppy', 'CHANGELOG.md'),
+    title: 'Changelog'
 }).build();
 
 var examples = new Documentation({
     entry: 'examples',
-    breadcrumbs: [ frameworkEntry ]
+    breadcrumbs: [ frameworkEntry ],
+    titleRoot: 'Examples',
+    title: 'Examples &bull; {{section._name}}'
 }).build();
 
 var guide = new Documentation({
     entry: 'guide',
-    breadcrumbs: [ frameworkEntry ]
+    breadcrumbs: [ frameworkEntry ],
+    titleRoot: 'Guide',
+    title: 'Guide &bull; {{section._name}}'
 }).build();
 

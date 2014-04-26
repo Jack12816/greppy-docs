@@ -15,6 +15,7 @@ var slug = require('slug');
 var crypto = require('crypto');
 var mustache = require('mustache');
 var colors = require('colors');
+var mpath = require('mpath');
 
 /**
  * @construct
@@ -32,7 +33,11 @@ var Section = function(options)
         outputFileameProperty: '_name',
         entry: '',
         entryViewPath: path.join(this.rootPath, 'resources', 'views', 'index', '%s'),
-        subViewPath: path.join(this.rootPath, 'resources', 'views', 'index', '%s')
+        subViewPath: path.join(this.rootPath, 'resources', 'views', 'index', '%s'),
+        title: '',
+        titleRoot: '',
+        titleMixin: {},
+        sitemapLocPrefix: 'http://docs.greppy.org/framework'
     };
 
     // Assemble the options
@@ -54,6 +59,7 @@ var Section = function(options)
     }
 
     this.package = require(path.join(this.rootPath, 'package.json'));
+    this.sitemap = new (require('./sitemap'))();
 };
 
 /**
@@ -162,10 +168,23 @@ Section.prototype.render = function(paths, section, sections)
         var outputFile = path.resolve(path.join.apply(this, joinPaths));
     }
 
+    // Build the title
+    var title = mustache.render(
+        self.options.title,
+        extend({
+            package: this.package,
+            section: section,
+            subsections: subsections,
+            breadcrumbs: sections,
+            slug: slug
+        }, self.options.titleMixin)
+    );
+
     // Get the view path
     var viewPath = this.options.subViewPath;
     if (1 === paths.length && '/' === paths[0]) {
         viewPath = this.options.entryViewPath;
+        title = self.options.titleRoot;
     }
 
     // Prepare current section if needed
@@ -207,6 +226,7 @@ Section.prototype.render = function(paths, section, sections)
         subsections: subsections,
         breadcrumbs: sections,
         slug: slug,
+        title: title,
         helper: {
             author: self.renderAuthor.bind(self)
         }
@@ -216,6 +236,12 @@ Section.prototype.render = function(paths, section, sections)
 
         // Write rendered file
         fs.writeFileSync(outputFile, html);
+
+        self.sitemap.add({
+            rel: outputFile.replace(this.rootPath + '/build', ''),
+            loc: self.options.sitemapLocPrefix + outputFile.replace(this.rootPath + '/build', ''),
+            title: title
+        });
 
         console.log(
             util.format(
@@ -244,6 +270,16 @@ Section.prototype.render = function(paths, section, sections)
 
         self.render.call(self, newPaths, section[key], newSections);
     });
+};
+
+/**
+ * Write the sitemap file.
+ *
+ * @param {String} [path] - Output path
+ */
+Section.prototype.flushSitemap = function(path)
+{
+    this.sitemap.flush(path);
 };
 
 module.exports = Section;
