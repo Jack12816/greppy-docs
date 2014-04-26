@@ -106,7 +106,7 @@ Classifier.prototype.addConstructor = function(classObj)
         method.description = classObj.description;
     } else {
         method.description = 'With the help of this method you can ' +
-            'create a new instance of ' + classObj.name;
+            'create a new instance of ' + classObj.name + '.';
     }
 
     if (method.loc && method.loc.end) {

@@ -261,7 +261,7 @@ API.prototype.buildStructure = function()
 
                 if (!cur[part]) {
                     cur[part] = {
-                        _name: part.capitalize(),
+                        _name: self.sanitizer.sanitizeName(part),
                         _filename: '',
                         _file: {
                             contributors: [],
@@ -293,7 +293,7 @@ API.prototype.buildStructure = function()
 
             if (!cur[part]) {
                 cur[part] = {
-                    _name: part.capitalize(),
+                    _name: self.sanitizer.sanitizeName(part),
                     _filename: '',
                     _file: {
                         contributors: [],
