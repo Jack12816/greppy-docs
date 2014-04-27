@@ -4,7 +4,7 @@ SHELL=/bin/bash
 MAKE := make
 GRUNT := $(shell pwd)/node_modules/.bin/grunt
 
-.PHONY: install build clean watch serve
+.PHONY: install build release-build clean watch serve
 
 all: build
 
@@ -18,6 +18,10 @@ install:
 build:
 	###### Build ######
 	@${GRUNT}
+
+release-build:
+	###### Build Release ######
+	@BASE_PATH='/framework' ${GRUNT}
 
 clean:
 	###### Cleanup ######

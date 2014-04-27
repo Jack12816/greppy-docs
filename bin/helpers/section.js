@@ -36,9 +36,15 @@ var Section = function(options)
         subViewPath: path.join(this.rootPath, 'resources', 'views', 'index', '%s'),
         title: '',
         titleRoot: '',
+        basePath: '',
         titleMixin: {},
-        sitemapLocPrefix: 'http://docs.greppy.org/framework'
+        sitemapLocPrefix: 'http://docs.greppy.org'
     };
+
+    // Check environment variables
+    if (process.env.BASE_PATH) {
+        defaultOptions.basePath = process.env.BASE_PATH;
+    }
 
     // Assemble the options
     this.options = extend({}, defaultOptions, options || {});
@@ -221,6 +227,7 @@ Section.prototype.render = function(paths, section, sections)
     // Render the HTML
     var html = jade.renderFile(viewPath, {
         pretty: false,
+        basePath: self.options.basePath,
         package: this.package,
         section: section,
         subsections: subsections,
@@ -237,10 +244,14 @@ Section.prototype.render = function(paths, section, sections)
         // Write rendered file
         fs.writeFileSync(outputFile, html);
 
+        var rel = outputFile.replace(this.rootPath + '/build', '');
+
         self.sitemap.add({
-            rel: outputFile.replace(this.rootPath + '/build', ''),
-            loc: self.options.sitemapLocPrefix + outputFile.replace(this.rootPath + '/build', ''),
-            title: title
+            title: title,
+            rel: self.options.basePath + rel,
+            loc: self.options.sitemapLocPrefix +
+                 self.options.basePath +
+                 rel
         });
 
         console.log(

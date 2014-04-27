@@ -1,4 +1,6 @@
 /* global module:false */
+var slug = require('slug');
+
 module.exports = function(grunt) {
 
     // Project configuration
@@ -11,7 +13,9 @@ module.exports = function(grunt) {
                 options: {
                     data: {
                         debug: false,
-                        package: '<%= pkg %>'
+                        package: '<%= pkg %>',
+                        basePath: process.env.BASE_PATH || '',
+                        slug: slug
                     }
                 },
                 files: {

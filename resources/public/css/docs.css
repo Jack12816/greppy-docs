@@ -411,6 +411,30 @@ pre .meta .filepath {
     font-weight: 200;
 }
 
+.margin-right-tiny {
+    margin-right: 1.5em;
+}
+
+.margin-right-small {
+    margin-right: 3em;
+}
+
+.margin-right-medium {
+    margin-right: 6em;
+}
+
+.margin-right-large {
+    margin-right: 9em;
+}
+
+.margin-right-grande {
+    margin-right: 18em;
+}
+
+.margin-bottom-tiny {
+    margin-bottom: 1.5em;
+}
+
 .margin-bottom-small {
     margin-bottom: 3em;
 }

@@ -4,28 +4,83 @@ include ../mixins/_subsection
 block content
 
   .row
-    .col-lg-12
+    .col-sm-offset-3.col-sm-9
       h1
         i.fa.fa-gears
-        |  Framework Documentation
+        |  Framework
   .row
-    .col-lg-12
+    .col-sm-offset-3.col-sm-9
       ol.breadcrumb
+        li
+          span
+            a(href="/") Documentation
         li.active
-          span Framework Documentation
+          span Framework
   .row
     .col-lg-12
       hr
 
-  - var sections = []
-  - sections.push({_name: 'Readme', _icon: 'fa-file-text-o', _path: '/readme'})
-  - sections.push({_name: 'Changelog', _icon: 'fa-clock-o', _path: '/changelog'})
-  - sections.push({_name: 'Guide', _icon: 'fa-book', _path: '/guide'})
-  - sections.push({_name: 'Examples', _icon: 'fa-th-large', _path: '/examples'})
-  - sections.push({_name: 'Reference', _icon: 'fa-code', _path: '/reference'})
+  // - var sections = []
+  // - sections.push({_name: 'Readme', _icon: 'fa-file-text-o', _path: '/readme'})
+  // - sections.push({_name: 'Changelog', _icon: 'fa-clock-o', _path: '/changelog'})
+  // - sections.push({_name: 'Guide', _icon: 'fa-book', _path: '/guide'})
+  // - sections.push({_name: 'Examples', _icon: 'fa-th-large', _path: '/examples'})
+  // - sections.push({_name: 'Reference', _icon: 'fa-code', _path: '/reference'})
+
+  // .row
+  //   .col-lg-12
+  //     each section in sections
+  //       +subsection(section)
 
   .row
-    .col-lg-12
-      each section in sections
-        +subsection(section)
+    .col-sm-3#toc
+      ul
+        li
+          a(href="#framework") Framework
+          ul
+            li
+              a(href="#readme") Readme
+            li
+              a(href="#changelog") Changelog
+            li
+              a(href="#guide") Guide
+            li
+              a(href="#examples") Examples
+            li
+              a(href="#reference") Reference
+
+    .col-sm-9#main
+
+      .row.margin-bottom-small
+        .col-lg-6
+          +headerSubsection({_name: 'Readme', _icon: 'fa-file-text-o', _path: '/readme'})
+          p.
+            With the help of this section you can learn some basics for getting started,
+            the major features of the framework and how to contribute to it.
+
+        .col-lg-6
+          +headerSubsection({_name: 'Changelog', _icon: 'fa-clock-o', _path: '/changelog'})
+          p.
+            In this section we prepare a detailed log of code changes. Keep an eye
+            on this section for new features, improvements and bugfixes. Stay tuned!
+
+      .row.margin-bottom-small
+        .col-lg-6
+          +headerSubsection({_name: 'Guide', _icon: 'fa-book', _path: '/guide'})
+          p.
+            The guide will push you to the next level of Greppy knowledge. We cover
+            fundamentals, deep sub-routine usage, and an overall view of the framework.
+
+        .col-lg-6
+          +headerSubsection({_name: 'Cookbook', _icon: 'fa-magic', _path: '/cookbook'})
+          p.
+            The cookbook covers solutions for common usecases and problems. You will
+            find detailed descriptions how to use the solutions without suffer from headaches.
+
+      .row.margin-bottom-small
+        .col-lg-6
+          +headerSubsection({_name: 'Reference', _icon: 'fa-code', _path: '/reference'})
+          p.
+            A complete coding experience is guaranteed with this section. Look up
+            detailed class outlines with our API reference.
 

@@ -9,7 +9,7 @@ mixin methodDescription(method, classObj)
         |  #{method.name}
         .pull-right
           a(
-            href="#{classObj.codePath}##{method.position}",
+            href="#{basePath}#{classObj.codePath}##{method.position}",
             data-toggle="tooltip",
             data-placement="top",
             data-title="View source"

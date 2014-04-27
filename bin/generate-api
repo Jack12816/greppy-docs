@@ -8,8 +8,13 @@ var API  = require('./helpers/api');
 /**
  * Defaults.
  */
+var documentationEntry = {
+    _name: 'Documentation',
+    _path: '/../'
+};
+
 var frameworkEntry = {
-    _name: 'Framework Documentation',
+    _name: 'Framework',
     _path: '/'
 };
 
@@ -17,7 +22,7 @@ var frameworkEntry = {
  * Generate API documentation.
  */
 var api = new API({
-    breadcrumbs: [ frameworkEntry ],
+    breadcrumbs: [ documentationEntry, frameworkEntry ],
     debug: {
         enabled: false,
         exit: false,

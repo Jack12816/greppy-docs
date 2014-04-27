@@ -15,7 +15,7 @@ block content
       ol.breadcrumb
         each crumb in breadcrumbs
           li
-            a(href="#{crumb._path}") #{crumb._name}
+            a(href="#{basePath}#{crumb._path}") #{crumb._name}
         li.active
           span #{section._file.name}
 

@@ -1,8 +1,16 @@
 mixin subsection(section)
-  .col-lg-2.text-center.component
-    a(href="#{section._path}")
+  .col-lg-3.text-center.component
+    a(href="#{basePath}#{section._path}")
       i.fa.fa-3x.fa-border-circle.text-muted(class="#{section._icon}")
     br
-    a(href="#{section._path}")
+    a(href="#{basePath}#{section._path}")
       h4 #{section._name}
+
+mixin headerSubsection(section)
+  .pull-left
+    a(href="#{basePath}#{section._path}").margin-right-tiny
+      i.fa.fa-5x.fa-border-circle.text-muted(class="#{section._icon}")
+  p
+    a(href="#{basePath}#{section._path}")
+      h1(id="#{slug(section._name.toLowerCase())}") #{section._name}
 

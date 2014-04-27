@@ -12,8 +12,12 @@ var Documentation = require('./helpers/documentation');
  * Defaults.
  */
 var rootPath = path.resolve(__dirname, '..');
+var documentationEntry = {
+    _name: 'Documentation',
+    _path: '/../'
+};
 var frameworkEntry = {
-    _name: 'Framework Documentation',
+    _name: 'Framework',
     _path: '/'
 };
 
@@ -29,7 +33,7 @@ fs.unlink(path.join(rootPath, 'build', 'sitemap.xml'));
 var readme = new File({
     entry: 'readme',
     icon: 'fa-file-text-o',
-    breadcrumbs: [ frameworkEntry ],
+    breadcrumbs: [ documentationEntry, frameworkEntry ],
     inputPath: path.join(rootPath, 'node_modules', 'greppy', 'README.md'),
     title: 'Readme'
 }).build();
@@ -37,21 +41,21 @@ var readme = new File({
 var changelog = new File({
     entry: 'changelog',
     icon: 'fa-clock-o',
-    breadcrumbs: [ frameworkEntry ],
+    breadcrumbs: [ documentationEntry, frameworkEntry ],
     inputPath: path.join(rootPath, 'node_modules', 'greppy', 'CHANGELOG.md'),
     title: 'Changelog'
 }).build();
 
 var examples = new Documentation({
-    entry: 'examples',
-    breadcrumbs: [ frameworkEntry ],
-    titleRoot: 'Examples',
-    title: 'Examples &bull; {{section._name}}'
+    entry: 'cookbook',
+    breadcrumbs: [ documentationEntry, frameworkEntry ],
+    titleRoot: 'Cookbook',
+    title: 'Cookbook &bull; {{section._name}}'
 }).build();
 
 var guide = new Documentation({
     entry: 'guide',
-    breadcrumbs: [ frameworkEntry ],
+    breadcrumbs: [ documentationEntry, frameworkEntry ],
     titleRoot: 'Guide',
     title: 'Guide &bull; {{section._name}}'
 }).build();

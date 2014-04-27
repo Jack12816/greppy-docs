@@ -13,7 +13,7 @@ block header
       ol.breadcrumb
         each crumb in breadcrumbs
           li
-            a(href="#{crumb._path}") #{crumb._name}
+            a(href="#{basePath}#{crumb._path}") #{crumb._name}
         li.active
           span #{section._name}
   .row
@@ -22,9 +22,9 @@ block header
 
 block subsections
 
-  .row
-    each section in subsections
-      +subsection(section)
+  // .row
+  //   each section in subsections
+  //     +subsection(section)
 
 block section
 
@@ -33,5 +33,9 @@ block section
       |!{section._content.toc}
 
     .col-sm-9#main
+      .row
+        each section in subsections
+          +subsection(section)
+
       |!{section._content.content}
 
