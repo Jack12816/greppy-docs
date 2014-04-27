@@ -11,11 +11,34 @@ freenode.
 
 ## Contributing
 
-To setup the documentation build environment just run:
+For getting started you need a proper build environment.
+You need to install all necessary node.js [packages](/package.json) and
+some frontend assets, like [Bootstrap](http://getbootstrap.com/) and
+[jQuery](http://jquery.com/). To setup the documentation build
+environment just run:
 
     $ make install
 
-Build the docs with:
+The build of the documentation will be located in a new created
+directory named **docs/**. All further builds will not clear the
+first build, they will only extend the build. Build the
+documentation with:
 
     $ make build
+
+If you like to clear the build directory, just run:
+
+    $ make clean
+
+You can serve the builded documentation with a standalone
+server which is listening on localhost:9000. Start the
+server with:
+
+    $ make serve
+
+You could start a process which watches all files for
+changes and automatically rebuild the documentation.
+This is great while you working on it. Start it with:
+
+    $ make watch
 

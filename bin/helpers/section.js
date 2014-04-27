@@ -38,7 +38,9 @@ var Section = function(options)
         titleRoot: '',
         basePath: '',
         titleMixin: {},
-        sitemapLocPrefix: 'http://docs.greppy.org'
+        sitemapLocPrefix: '',
+        sitemapOutputPath: path.join(this.rootPath, 'build'),
+        sitemapEntries: []
     };
 
     // Check environment variables
@@ -65,7 +67,11 @@ var Section = function(options)
     }
 
     this.package = require(path.join(this.rootPath, 'package.json'));
-    this.sitemap = new (require('./sitemap'))();
+    this.sitemap = new (require('./sitemap'))({
+        locPrefix: this.options.sitemapLocPrefix,
+        outputPath: this.options.sitemapOutputPath,
+        entries: this.options.sitemapEntries
+    });
 };
 
 /**

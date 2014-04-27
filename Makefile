@@ -25,7 +25,7 @@ release-build:
 
 clean:
 	###### Cleanup ######
-	@rm -f ./build
+	@rm -fr ./build
 
 watch:
 	###### Watch ######

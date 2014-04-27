@@ -85,6 +85,7 @@ File.prototype.build = function()
 
     // Render sections
     this.section.render(null, structure, this.options.breadcrumbs);
+    this.section.flushSitemap();
 };
 
 module.exports = File;

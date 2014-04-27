@@ -59,19 +59,19 @@ module.exports = function(grunt) {
                 options: {
                     stdout: true
                 },
-                command: './bin/generate-docs'
+                command: './bin/build -f -d'
             },
             api: {
                 options: {
                     stdout: true
                 },
-                command: './bin/generate-api'
+                command: './bin/build -r'
             },
             structure: {
                 options: {
                     stdout: true
                 },
-                command: './bin/build-assets'
+                command: './bin/build -c'
             }
         },
 

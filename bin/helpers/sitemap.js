@@ -14,13 +14,28 @@ var moment = require('moment');
 
 /**
  * @construct
+ *
+ * @param {Object} options - Options object
  */
-var Sitemap = function()
+var Sitemap = function(options)
 {
+    var self = this;
     this.rootPath = resolve(__dirname, '../..');
-    this.outputPath = join(this.rootPath, 'build');
+
+    var defaultOptions = {
+        outputPath: join(this.rootPath, 'build'),
+        entries: []
+    };
+
+    // Assemble the options
+    this.options = extend({}, defaultOptions, options || {});
 
     this.buffer = [];
+
+    // Append the passed entries to the buffer
+    this.options.entries.forEach(function(item) {
+        self.add(item);
+    });
 };
 
 /**
@@ -48,7 +63,7 @@ Sitemap.prototype.add = function(url)
 Sitemap.prototype.flush = function(path)
 {
     if (!path) {
-        var path = join(this.outputPath, 'sitemap');
+        var path = join(this.options.outputPath, 'sitemap');
     }
 
     var jsonPath = path + '.json';
@@ -57,10 +72,21 @@ Sitemap.prototype.flush = function(path)
     // Check if we got a existing sitemap
     if (fs.existsSync(jsonPath)) {
         try {
-            var existing = require(jsonPath);
+            var existing = JSON.parse(fs.readFileSync(jsonPath));
             this.buffer = this.buffer.concat(existing);
         } catch (e) { }
     }
+
+    // Build a uniq set
+    var map = {};
+
+    this.buffer.forEach(function(item) {
+        map[item.rel] = item;
+    });
+
+    this.buffer = Object.keys(map).map(function(item) {
+        return map[item];
+    });
 
     // Write JSON sitemap file
     fs.writeFileSync(
@@ -131,7 +157,7 @@ Sitemap.prototype.flush = function(path)
         util.format(
             'File %s created: %s',
             (xmlPath.replace(this.rootPath + '/', '')).cyan,
-            fs.statSync(jsonPath).size.memory()
+            fs.statSync(xmlPath).size.memory()
         )
     );
 

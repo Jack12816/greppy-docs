@@ -5,6 +5,7 @@
  */
 
 var path = require('path');
+var util = require('util');
 var wrench = require('wrench');
 
 /**
@@ -25,11 +26,27 @@ var Assets = function()
  */
 Assets.prototype.createBuildDirectories = function()
 {
-    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build'));
-    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'assets'));
-    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'reference'));
-    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'examples'));
-    wrench.mkdirSyncRecursive(path.join(this.rootPath, 'build', 'guide'));
+    var self = this;
+
+    var dirs = [
+        'build',
+        path.join('build', 'assets'),
+        path.join('build', 'reference'),
+        path.join('build', 'examples'),
+        path.join('build', 'guide')
+    ];
+
+    dirs.forEach(function(dir) {
+
+        wrench.mkdirSyncRecursive(path.join(self.rootPath, dir));
+
+        console.log(
+            util.format(
+                'Directory %s created',
+                ('' + dir).cyan
+            )
+        );
+    });
 };
 
 /**
@@ -37,9 +54,25 @@ Assets.prototype.createBuildDirectories = function()
  */
 Assets.prototype.copyAssets = function()
 {
+    console.log(
+        util.format(
+            'Directory %s copied to %s',
+            (this.imagesPath.replace(this.rootPath + '/', '')).cyan,
+            (this.assetsPath.replace(this.rootPath + '/', '')).cyan
+        )
+    );
+
     wrench.copyDirSyncRecursive(
         this.imagesPath, this.assetsPath,
         {forceDelete: true}
+    );
+
+    console.log(
+        util.format(
+            'Directory %s copied to %s',
+            (this.faFontsSrcPath.replace(this.rootPath + '/', '')).cyan,
+            (this.fontsDestPath.replace(this.rootPath + '/', '')).cyan
+        )
     );
 
     wrench.copyDirSyncRecursive(
