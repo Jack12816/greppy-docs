@@ -1,0 +1,97 @@
+#!/usr/bin/env node
+/**
+ * Documentation generation script.
+ *
+ * @author Hermann Mayer <hermann.mayer92@gmail.com>
+ */
+
+// Setup getopt parser
+var getopt = require('node-getopt').create([
+    ['f', 'files', 'Build all file documentations'],
+    ['d', 'docs', 'Build all compound documentations'],
+    ['r', 'api', 'Build the API reference'],
+    ['c', 'assets', 'Copy all necessary frontend assets\n'],
+    ['a', 'all', 'Build all documentations'],
+    ['h', 'help', 'Display this help']
+]);
+
+getopt.setHelp(
+    'Usage: ./bin/build [OPTION]\n' +
+    '\n' +
+    '[[OPTIONS]]\n'
+);
+
+// Parse the given process args
+var opts = getopt.parseSystem();
+
+// Without args print the help
+if (0 === Object.keys(opts.options).length ||
+    opts.options.hasOwnProperty('help')) {
+    getopt.showHelp();
+    return;
+}
+
+// Load all required modules
+var extend = require('extend');
+var config = require('./config.js');
+
+var Config        = require('./helpers/config');
+var Assets        = require('./helpers/assets');
+var File          = require('./helpers/file');
+var Documentation = require('./helpers/documentation');
+var API           = require('./helpers/api');
+
+// Bootstrap all runtime objects
+var preparer = new Config(config);
+
+// Check for copying assets
+if (opts.options.hasOwnProperty('assets') ||
+    opts.options.hasOwnProperty('all')) {
+
+    // Setup assets and build directory
+    var assets = new Assets();
+    assets.createBuildDirectories();
+    assets.copyAssets();
+}
+
+// Check for building files
+if (opts.options.hasOwnProperty('files') ||
+    opts.options.hasOwnProperty('all')) {
+
+    // Build all files
+    config.files.forEach(function(fileConfig) {
+
+        var file = new File(
+            preparer.prepareEntry(fileConfig)
+        );
+
+        file.build();
+    });
+}
+
+// Check for building documentations
+if (opts.options.hasOwnProperty('docs') ||
+    opts.options.hasOwnProperty('all')) {
+
+    // Build all documentations
+    config.documentations.forEach(function(documentationConfig) {
+
+        var documentation = new Documentation(
+            preparer.prepareEntry(documentationConfig)
+        );
+
+        documentation.build();
+    });
+}
+
+// Check for building API reference
+if (opts.options.hasOwnProperty('api') ||
+    opts.options.hasOwnProperty('all')) {
+
+    var api = new API(
+        preparer.prepareEntry(config.api)
+    );
+
+    api.build();
+}
+
