@@ -38,22 +38,23 @@ html, body{
 .nav .active:after {
     color: #F1F1F1;
     position: absolute;
-    bottom: -1px;
+    bottom: -3px;
     left: 50%;
     width: 0px;
     height: 0px;
-    margin-left: -8px;
+    margin-left: -9px;
     vertical-align: middle;
     content: " ";
     border-right: 8px solid transparent;
-    border-bottom: 8px solid;
-    border-left: 8px solid transparent;
+    border-bottom: 9px solid;
+    border-left: 9px solid transparent;
 }
 
 .navbar {
     -webkit-box-shadow: 0px 10px 5px #ffffff;
     -moz-box-shadow: 0px 10px 5px #ffffff;
     box-shadow: 0px 10px 5px #ffffff;
+    border-bottom: 3px solid #48A1CE;
 }
 
 /**
