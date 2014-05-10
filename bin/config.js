@@ -80,6 +80,13 @@ config.documentations = [
         titleRoot: 'Cookbook',
         title: 'Cookbook &bull; {{section._name}}',
         entry: 'cookbook'
+    },
+
+    // Migration
+    {
+        titleRoot: 'Migration',
+        title: 'Migration &bull; {{section._name}}',
+        entry: 'migration'
     }
 ];
 
