@@ -43,7 +43,7 @@
     "grunt-shell": "^0.6.4",
     "highlight.js": "~8.0.0",
     "jade": "^1.3.1",
-    "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
+    "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git#1566421a62b3c15bdaef14d38761de5c6648cb5e",
     "marked": "^0.2.9",
     "moment": "^2.6.0",
     "mpath": "^0.2.1",
