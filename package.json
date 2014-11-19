@@ -32,7 +32,7 @@
   "dependencies": {
     "colors": "^0.6.2",
     "extend": "^1.2.1",
-    "greppy": "*",
+    "greppy": "git+https://github.com/Jack12816/greppy",
     "grunt": "^0.4.3",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-connect": "^0.7.1",
